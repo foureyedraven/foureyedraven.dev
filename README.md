@@ -1,3 +1,5 @@
-# react skeleton
-easy start for a new react project
- 
+# foureyedraven.dev
+My personal developer website.
+
+Follow me on github, stackoverflow and reddit `@foureyedraven`
+Follow me on twitter at `@tracer_reaper`
