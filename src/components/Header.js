@@ -1,20 +1,27 @@
 import React, { Component } from 'react'
 
 const header = {
-  display: 'flex',
-  //justifyContent: 'center',
-  alignItems: 'center',
-  height: 'fit-content',
-  paddingTop: '33px',
-  paddingBottom: '33px',
-  backgroundColor: '#000',
-  maxWidth: '850px',
+  // display: 'flex',
+  // alignItems: 'center',
+  padding: '33px',
+  backgroundColor: '#111',
   alignSelf: 'flex-start',
 }
 
 const h1 = {
   color: '#ffffff',
-  fontFamily: 'monospace'
+  fontFamily: 'monospace',
+  marginBottom: 10,
+  marginTop: 10,
+  fontSize: 30
+}
+
+const h2 = {
+  color: '#eee',
+  fontFamily: 'sans-serif',
+  fontSize: 14,
+  fontWeight: 300,
+  // textTransform: 'uppercase',
 }
 
 class Item extends Component {
@@ -51,12 +58,16 @@ export default class Header extends Component {
   render() {
 
     return (
-      <div style={header} className="col-lg-6">
+      <div style={header}>
         <div>
           <h1 style={h1}>
-            foureyedraven
+            Theresa Rapior
           </h1>
+          <h2 style={h2}>
+            Software Engineer, Fullstack
+          </h2>
         </div>
+
       </div>
     )
   }

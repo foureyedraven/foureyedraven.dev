@@ -5,20 +5,24 @@ const footer = {
   display: 'flex',
   alignItems: 'center',
   height: 'fit-content',
-  paddingTop: '33px',
-  paddingBottom: '33px',
+  padding: '33px',
   backgroundColor: '#fff',
-  border: '2px solid #000',
-  maxWidth: '850px',
-  alignSelf: 'flex-start'
+  borderWidth: '2px 0px',
+  borderStyle: 'solid',
+  borderColor: '#111',
+  alignSelf: 'flex-start',
+  width: '100%',
+  position: 'fixed',
+  bottom: 0,
+  left: 0,
 }
 
 const text = {
-  color: '#000',
+  color: '#111',
   fontFamily: 'monospace',
   fontSize: '14px',
   paddingRight: '20px',
-  textDecoration: 'underline'
+  textDecoration: 'underline',
 
 }
 
@@ -28,13 +32,14 @@ export default class Footer extends Component {
       'Twitter': 'https://twitter.com/tracer_reaper',
       'GitHub': 'https://github.com/foureyedraven',
       'Stack Overflow': 'https://stackoverflow.com/users/5304980/foureyedraven',
-      'Reddit': 'https://www.reddit.com/user/foureyedraven'
+      'LinkedIn': 'https://www.linkedin.com/in/theresarapior/',
+      // 'Reddit': 'https://www.reddit.com/user/foureyedraven'
     }
     return (
-      <div style={footer} className="col-lg-6">
+      <div style={footer}>
         <div>
           {Object.keys(links).map(link => (
-            <a key={link} style={text} href={links[link]}>{link}</a>
+            <a key={link} style={text} target="_blank" href={links[link]}>{link}</a>
           ))}
         </div>
       </div>
