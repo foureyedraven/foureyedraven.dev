@@ -12,6 +12,7 @@ const h1 = {
   color: '#ffffff',
   fontFamily: 'monospace',
   marginBottom: 10,
+  marginTop: 10,
   fontSize: 30
 }
 

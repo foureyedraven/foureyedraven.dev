@@ -6,7 +6,10 @@ import Content from './components/Content'
 class App extends Component {
 	render() {
 		return (
-      <div>
+      <div style={{
+        overflow: 'scroll',
+        paddingBottom: '88px',
+      }}>
         <Header />
         <Content />
         <Footer />
