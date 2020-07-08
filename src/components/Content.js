@@ -1,32 +1,31 @@
 import React, { Component } from 'react'
-
+import { Document } from 'react-pdf'
+import resume from '../assets/resume.pdf'
 
 const content = {
-  display: 'flex',
-  paddingTop: '33px',
-  paddingBottom: '33px',
+  padding: '33px',
   backgroundColor: '#fff',
   border: '2px',
-  borderColor: '#000',
-  maxWidth: '850px',
+  borderColor: '#111',
   alignSelf: 'flex-start',
-  height: '100%'
+  height: 'inherit'
 }
 
 const text = {
-  color: '#000',
+  color: '#111',
   fontFamily: 'monospace',
   fontSize: '14px',
-  paddingRight: '20px'
-
+  paddingRight: '20px',
 }
 
 export default class Content extends Component {
   render() {
     return (
-      <div style={content} className="col-lg-6">
-        <div style={text}>
-          Cavalry's here!
+      <div style={content}>
+        <div>
+          <div style={text}>
+            Cavalry's here!
+          </div>
         </div>
       </div>
     )
