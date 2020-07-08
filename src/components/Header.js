@@ -66,6 +66,7 @@ export default class Header extends Component {
             Software Engineer, Fullstack
           </h2>
         </div>
+
       </div>
     )
   }

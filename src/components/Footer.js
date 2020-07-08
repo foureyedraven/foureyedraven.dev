@@ -32,13 +32,14 @@ export default class Footer extends Component {
       'Twitter': 'https://twitter.com/tracer_reaper',
       'GitHub': 'https://github.com/foureyedraven',
       'Stack Overflow': 'https://stackoverflow.com/users/5304980/foureyedraven',
+      'LinkedIn': 'https://www.linkedin.com/in/theresarapior/',
       // 'Reddit': 'https://www.reddit.com/user/foureyedraven'
     }
     return (
       <div style={footer}>
         <div>
           {Object.keys(links).map(link => (
-            <a key={link} style={text} href={links[link]}>{link}</a>
+            <a key={link} style={text} target="_blank" href={links[link]}>{link}</a>
           ))}
         </div>
       </div>

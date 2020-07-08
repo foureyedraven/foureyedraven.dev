@@ -6,7 +6,7 @@ import Content from './components/Content'
 class App extends Component {
 	render() {
 		return (
-      <div style={{ height: '100%' }}>
+      <div>
         <Header />
         <Content />
         <Footer />
