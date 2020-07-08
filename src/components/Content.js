@@ -1,6 +1,4 @@
 import React, { Component } from 'react'
-import { Document } from 'react-pdf'
-import resume from '../assets/resume.pdf'
 
 const content = {
   padding: '33px',
