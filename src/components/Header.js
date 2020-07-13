@@ -4,54 +4,25 @@ const header = {
   // display: 'flex',
   // alignItems: 'center',
   padding: '33px',
+  paddingBottom: '12px',
   backgroundColor: '#111',
   alignSelf: 'flex-start',
 }
 
 const h1 = {
-  color: '#ffffff',
-  fontFamily: 'monospace',
+  color: '#fff',
+  // fontFamily: 'monospace',
   marginBottom: 10,
   marginTop: 10,
-  fontSize: 30
+  fontSize: 36
 }
 
 const h2 = {
   color: '#eee',
-  fontFamily: 'sans-serif',
-  fontSize: 14,
-  fontWeight: 300,
+  // fontFamily: 'sans-serif',
+  fontSize: 16,
+  fontWeight: 400,
   // textTransform: 'uppercase',
-}
-
-class Item extends Component {
-  render() {
-    return (
-      <div></div>
-    )
-  }
-}
-
-class ExpandingContent extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      expanded: false,
-    }
-  }
-
-  toggle(value) {
-    this.setState(state => {
-      return { [value]: !this.state[value] }
-    })
-  }
-
-  render() {
-    return (
-      <div>
-      </div>
-    )
-  }
 }
 
 export default class Header extends Component {
@@ -64,10 +35,9 @@ export default class Header extends Component {
             Theresa Rapior
           </h1>
           <h2 style={h2}>
-            Software Engineer, Fullstack
+            Software Engineer
           </h2>
         </div>
-
       </div>
     )
   }
