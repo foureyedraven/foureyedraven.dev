@@ -1,4 +1,7 @@
 import React, { Component } from 'react'
+import { Terminal } from 'xterm';
+
+const term = new Terminal();
 
 const styles = {
   main: {
@@ -160,3 +163,5 @@ export default class Content extends Component {
     )
   }
 }
+
+term.open(document.getElementById('xterm-container'));
