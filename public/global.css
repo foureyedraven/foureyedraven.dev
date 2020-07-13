@@ -46,10 +46,9 @@ p a {
   line-height: 1.4em;
 }
 
-/* a {
-  font-family: 'Source Sans Pro';
-  font-size: 16px;
-} */
+li {
+  line-height: 1.5em;
+}
 
 a:hover {
   border-bottom: 4px solid #4e4;
