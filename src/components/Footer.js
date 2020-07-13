@@ -19,9 +19,10 @@ const footer = {
 
 const text = {
   color: '#111',
-  fontFamily: 'monospace',
-  fontSize: '14px',
-  paddingRight: '20px',
+  // fontFamily: 'monospace',
+  // fontSize: '14px',
+  marginRight: '20px',
+  paddingBottom: '5px',
   textDecoration: 'underline',
 
 }
@@ -33,7 +34,6 @@ export default class Footer extends Component {
       'GitHub': 'https://github.com/foureyedraven',
       'Stack Overflow': 'https://stackoverflow.com/users/5304980/foureyedraven',
       'LinkedIn': 'https://www.linkedin.com/in/theresarapior/',
-      // 'Reddit': 'https://www.reddit.com/user/foureyedraven'
     }
     return (
       <div style={footer}>

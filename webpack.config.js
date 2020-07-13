@@ -1,5 +1,7 @@
 const path = require('path')
 const webpack = require('webpack')
+const HTMLWebpackPlugin = require('html-webpack-plugin');
+
 
 module.exports = [
   {
@@ -39,8 +41,19 @@ module.exports = [
               }
             }
           ]
+        },
+        {
+          test: /\.css$/,
+          use: ['style-loader', 'css-loader']
         }
       ]
-    }
+    },
+    plugins: [
+         //will automatically inject bundle js into ./dist/index.html
+         new HTMLWebpackPlugin({
+             template: './public/index.html', //source
+             filename: 'index.html'  //destination
+         })
+    ]
   }
 ]
