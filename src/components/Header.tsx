@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import * as React from "react"
 
 const header = {
   // display: 'flex',
@@ -25,7 +25,7 @@ const h2 = {
   // textTransform: 'uppercase',
 }
 
-export default class Header extends Component {
+export class Header extends React.Component<{}, any> {
   render() {
 
     return (

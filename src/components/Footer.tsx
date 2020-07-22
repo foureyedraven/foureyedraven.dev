@@ -1,5 +1,4 @@
-import React, { Component } from 'react'
-
+import * as React from "react"
 
 const footer = {
   display: 'flex',
@@ -27,19 +26,18 @@ const text = {
 
 }
 
-export default class Footer extends Component {
+export class Footer extends React.Component<{}, any> {
   render() {
     const links = {
-      'Twitter': 'https://twitter.com/tracer_reaper',
       'GitHub': 'https://github.com/foureyedraven',
-      'Stack Overflow': 'https://stackoverflow.com/users/5304980/foureyedraven',
       'LinkedIn': 'https://www.linkedin.com/in/theresarapior/',
+      'Twitter': 'https://twitter.com/tracer_reaper',
     }
     return (
       <div style={footer}>
         <div>
           {Object.keys(links).map(link => (
-            <a key={link} style={text} target="_blank" href={links[link]}>{link}</a>
+            <a key={link} style={text} target="_blank">{link}</a>
           ))}
         </div>
       </div>

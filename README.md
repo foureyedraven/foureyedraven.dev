@@ -1,7 +1,7 @@
 # foureyedraven.dev
 My personal developer website.
 
-Built with React and launched with Netlify.
+Built with Typescript and React, and launched on Netlify.
 
 Go to https://foureyedraven.dev
 
