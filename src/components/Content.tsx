@@ -1,5 +1,6 @@
 import * as React from "react"
 import { TabState } from "./constants"
+import Pokemon from "./pokemon"
 
 const styles = {
   main: {
@@ -131,7 +132,7 @@ const Demo = ({ data }) => {
       <p style={{ fontWeight: 400 }}>{data.subtitle}</p>
       <div style={{ margin: 33 }}>
         <p style={{ fontSize: 16, color: '#444' }}>
-          {data.url.length ? data.url : "Coming Soon..."}
+          {!!data.component ? React.createElement(data.component) : "Coming Soon..."}
         </p>
       </div>
     </div>
@@ -159,7 +160,7 @@ const demos = {
     title: 'Pokemon API Battle Game',
     subtitle: 'play a terminal Pokemon game that uses a Pokedex API',
     start: 'type \'help\' into the terminal and send',
-    url: '',
+    component: Pokemon, // shows github code, and links
     // maybe saving high scores? which db? mongodb?
     // websocket to play against another player? (sign in code?)
   },
@@ -211,7 +212,7 @@ interface NavTabsState {
 export class Content extends React.Component<{}, NavTabsState> {
   constructor(props: {}) {
     super(props);
-    this.state = { tabState: "Profile" };
+    this.state = { tabState: "Demos" };
 
   }
   render() {

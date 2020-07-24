@@ -28687,6 +28687,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Content", function() { return Content; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _pokemon__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./pokemon */ "./src/components/pokemon.tsx");
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -28711,6 +28712,7 @@ var __assign = (undefined && undefined.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
+
 
 var styles = {
     main: {
@@ -28826,7 +28828,7 @@ var Demo = function (_a) {
             react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("h2", null, data.title)),
         react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("p", { style: { fontWeight: 400 } }, data.subtitle),
         react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { style: { margin: 33 } },
-            react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("p", { style: { fontSize: 16, color: '#444' } }, data.url.length ? data.url : "Coming Soon..."))));
+            react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("p", { style: { fontSize: 16, color: '#444' } }, !!data.component ? react__WEBPACK_IMPORTED_MODULE_0__["createElement"](data.component) : "Coming Soon..."))));
 };
 var Demos = function (data) {
     return (Object.values(data).map(function (demo) { return Demo({ data: demo }); }));
@@ -28840,7 +28842,7 @@ var demos = {
         title: 'Pokemon API Battle Game',
         subtitle: 'play a terminal Pokemon game that uses a Pokedex API',
         start: 'type \'help\' into the terminal and send',
-        url: '',
+        component: _pokemon__WEBPACK_IMPORTED_MODULE_1__["default"],
     },
     userData: {
         title: 'You on the Web',
@@ -28883,7 +28885,7 @@ var Content = /** @class */ (function (_super) {
     __extends(Content, _super);
     function Content(props) {
         var _this = _super.call(this, props) || this;
-        _this.state = { tabState: "Profile" };
+        _this.state = { tabState: "Demos" };
         return _this;
     }
     Content.prototype.render = function () {
@@ -29030,6 +29032,39 @@ var Header = /** @class */ (function (_super) {
     return Header;
 }(react__WEBPACK_IMPORTED_MODULE_0__["Component"]));
 
+
+
+/***/ }),
+
+/***/ "./src/components/pokemon.tsx":
+/*!************************************!*\
+  !*** ./src/components/pokemon.tsx ***!
+  \************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+// show terminal
+// create commands
+
+function Pokemon(_a) {
+    var name = _a.name, _b = _a.enthusiasmLevel, enthusiasmLevel = _b === void 0 ? 1 : _b;
+    if (enthusiasmLevel <= 0) {
+        throw new Error('You could be a little more enthusiastic. :D');
+    }
+    return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "hello" },
+        react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "greeting" },
+            "Hello ",
+            name + getExclamationMarks(enthusiasmLevel))));
+}
+/* harmony default export */ __webpack_exports__["default"] = (Pokemon);
+// helpers
+function getExclamationMarks(numChars) {
+    return Array(numChars + 1).join('!');
+}
 
 
 /***/ }),
