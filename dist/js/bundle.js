@@ -550,6 +550,7 @@ var Terminal = /** @class */ (function (_super) {
         _this.handleKeyDown = _this.handleKeyDown.bind(_this);
         _this.handleKeyUp = _this.handleKeyUp.bind(_this);
         _this.input = react_1.default.createRef();
+        _this.body = react_1.default.createRef();
         _this.interval;
         return _this;
     }
@@ -580,7 +581,7 @@ var Terminal = /** @class */ (function (_super) {
      * Keep input in view at bottom on change
      */
     Terminal.prototype.componentDidUpdate = function (prevProps, prevState) {
-        this.input.current.scrollIntoView(false, { block: "end" });
+        this.body.current.scrollTo(0, this.body.current.scrollHeight);
         if (prevState.loading !== this.state.loading) {
             if (this.state.loading) {
                 this.renderLoadingAnimation();
@@ -696,11 +697,10 @@ var Terminal = /** @class */ (function (_super) {
     };
     Terminal.prototype.render = function () {
         var _this = this;
-        console.log(this);
         var _a = this.props, onClose = _a.onClose, onExpand = _a.onExpand, onMinimize = _a.onMinimize, prefix = _a.prefix, styles = _a.styles, theme = _a.theme;
         var _b = this.state, history = _b.history, cwd = _b.cwd;
         var style = Object.assign({}, styles_js_1.default[theme] || styles_js_1.default.dark, styles);
-        return (react_1.default.createElement("div", { className: "ReactBash", style: style.ReactBash }, react_1.default.createElement("div", { style: style.header }, react_1.default.createElement("span", { style: style.redCircle, onClick: onClose }), react_1.default.createElement("span", { style: style.yellowCircle, onClick: onMinimize }), react_1.default.createElement("span", { style: style.greenCircle, onClick: onExpand })), react_1.default.createElement("div", { style: style.body, onClick: function () { return _this.input.current.focus(); } }, history.map(this.renderHistoryItem(style)), react_1.default.createElement("form", { onSubmit: function (e) { return _this.handleSubmit(e); }, style: style.form }, react_1.default.createElement("span", { style: style.prefix }, prefix + " ~" + cwd + " $"), react_1.default.createElement("input", { autoComplete: "off", onKeyDown: this.handleKeyDown, onKeyUp: this.handleKeyUp, ref: this.input, style: style.input })))));
+        return (react_1.default.createElement("div", { className: "ReactBash", style: style.ReactBash }, react_1.default.createElement("div", { style: style.header }, react_1.default.createElement("span", { style: style.redCircle, onClick: onClose }), react_1.default.createElement("span", { style: style.yellowCircle, onClick: onMinimize }), react_1.default.createElement("span", { style: style.greenCircle, onClick: onExpand })), react_1.default.createElement("div", { ref: this.body, style: style.body, onClick: function () { return _this.input.current.focus(); } }, history.map(this.renderHistoryItem(style)), react_1.default.createElement("form", { onSubmit: function (e) { return _this.handleSubmit(e); }, style: style.form }, react_1.default.createElement("span", { style: style.prefix }, prefix + " ~" + cwd + " $"), react_1.default.createElement("input", { autoComplete: "off", onKeyDown: this.handleKeyDown, onKeyUp: this.handleKeyUp, ref: this.input, style: style.input })))));
     };
     return Terminal;
 }(react_1.Component));
@@ -918,9 +918,10 @@ BaseStyles.ReactBash = {
     fontFamily: '\'Inconsolata\', monospace',
     fontSize: '13px',
     fontWeight: '400',
-    height: '100%',
     overflow: 'hidden',
     textAlign: 'left',
+    position: 'relative',
+    height: 300,
 };
 BaseStyles.header = {
     padding: '5px 10px 0',
@@ -944,9 +945,11 @@ BaseStyles.greenCircle = Object.assign({}, circle, {
 BaseStyles.body = {
     flexGrow: 1,
     overflowY: 'scroll',
+    overflowX: 'wrap',
     scrollPaddingBottom: '10px',
-    height: 300,
     padding: '10px',
+    position: 'relative',
+    height: '100%'
 };
 BaseStyles.form = {
     display: 'flex',
