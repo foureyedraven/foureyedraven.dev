@@ -11,7 +11,7 @@ const footer = {
   borderColor: '#111',
   alignSelf: 'flex-start',
   width: '100%',
-  position: 'fixed',
+  position: 'fixed' as 'fixed', // TS needed prop cast to string
   bottom: 0,
   left: 0,
 }

@@ -1,8 +1,15 @@
 {
   "name": "foureyedraven.dev",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "authors": [
+    "foureyedraven <rapior.theresa@gmail.com (https://github.com/foureyedraven)"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/foureyedraven/foureyedraven.dev.git"
+  },
   "scripts": {
     "lint:js": "standard",
     "copy": "ncp public dist",
@@ -26,6 +33,7 @@
     "@types/node": "^14.0.23",
     "@types/react": "^16.9.43",
     "@types/react-dom": "^16.9.8",
+    "axios": "^0.19.2",
     "babel-loader": "^8.0.4",
     "classnames": "^2.2.6",
     "html-webpack-plugin": "^4.3.0",
@@ -33,6 +41,8 @@
     "ncp": "^2.0.0",
     "npm-run-all": "^4.1.5",
     "react": "^16.7.0",
+    "react-bash": "^1.6.0",
+    "react-bash-typescript": "file:../react-bash-typescript",
     "react-dom": "^16.7.0",
     "react-pdf": "^4.1.0",
     "react-redux": "^6.0.0",
