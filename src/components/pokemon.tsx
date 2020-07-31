@@ -1,117 +1,148 @@
-// show terminal
-// create commands
+// Uses an updated Terminal module (react-bash-typescript)[https://github.com/foureyedraven/react-bash-typescript]
+// to interact with PokeAPI (https://pokeapi.co/) and deliver
+// an interactive Pokemon battle game in the client.
+// Gives sense of accomplishment. (addictive) (report overall stats each game, desire to round up numbers (use larger increments, challenge people to reach a level))
+// should give pointers on what to do at the beginning to accomplish some goal.
+// Gives sense of adventure. (Maybe add regions you can go to. Or restrict V1 to certain region)
+// The more you play, the higher your XP, and higher the range of pokemon you can choose.
+// Or, you capture who you defeat. (desire to save progress, or accomplish more, ability to see accomplishments (battles, captured pokemon))
 
-import * as React from 'react';
+import * as React from 'react'
 import Terminal from 'react-bash-typescript'
-import axios from 'axios';
+import { isEmpty } from 'lodash'
+import { toCapitalCase, getRandomInteger } from '../utils'
+import { pokemonRules, history, structure, extensions } from './pokemon/data'
+import { getPokemon, getOpponent, getAbility, getMove } from './pokemon/api'
+import { returnError, formatResponse, transformPokemonData } from './pokemon/functions'
 
-const pikachu =`
-  \u00A0\u00A0\u00A0\u00A0/\\\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0/\\\u00A0/\\\n
-  \u00A0\u00A0\u00A0/\u00A0/\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0/\u00A0/\u00A0\\\u00A0\\\n
-  \u00A0\u00A0/\u00A0/\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0______\u00A0\u00A0\u00A0______\u00A0\u00A0\u00A0______\u00A0\u00A0\u00A0\u00A0/\u00A0/\u00A0\u00A0\u00A0\\\u00A0\\\n
-  \u00A0/\u00A0/\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0/_____/\u00A0\u00A0/_____/\u00A0\u00A0/_____/\u00A0\u00A0\u00A0/\u00A0/\u00A0\u00A0\u00A0\u00A0\u00A0\\\u00A0\\\n
-  /\u00A0/\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0/\u00A0/\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\\\u00A0\\\n
-  \\/\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\\/\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\\/\n
-  \u00A0\u00A0\u00A0\u00A0\u00A0/\\\u00A0\u00A0\u00A0\u00A0\u00A0___\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0___\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0/\\\n
-  \u00A0\u00A0\u00A0\u00A0/\u00A0/\u00A0\u00A0\u00A0\u00A0/\u00A0\u00A0/\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0/\u00A0\u00A0/\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0/\u00A0/\n
-  \u00A0\u00A0\u00A0/\u00A0/\u00A0\u00A0\u00A0\u00A0/\u00A0\u00A0/\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0/\u00A0\u00A0/\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0/\u00A0/\n
-  \u00A0\u00A0/\u00A0/\u00A0\u00A0\u00A0\u00A0(\u00A0\u00A0(\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0(\u00A0\u00A0(\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0/\u00A0/\n
-  \u00A0/\u00A0/\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\\\u00A0\u00A0\\\u00A0\u00A0\u00A0\u00A0\u00A0/\\\u00A0\u00A0\u00A0\u00A0\\\u00A0\u00A0\\\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0/\u00A0/\n
-  \u00A0\\/\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\\__\\\u00A0\u00A0\u00A0\u00A0\\/\u00A0\u00A0\u00A0\u00A0\u00A0\\__\\\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\\/\n
-  \u00A0/\\\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0/\\\n
-  \u00A0\\\u00A0\\\u00A0\u00A0\u00A0\u00A0\u00A0/\\|\\/\\\u00A0\u00A0\u00A0__\u00A0\u00A0__\u00A0\u00A0\u00A0\u00A0\u00A0/\\|\\/\\\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0/\u00A0/\n
-  \u00A0\u00A0\\\u00A0\\\u00A0\u00A0\u00A0_)\u00A0\u00A0\u00A0\u00A0(__\u00A0\\\u00A0\\/\u00A0\u00A0/\u00A0\u00A0\u00A0_)\u00A0\u00A0\u00A0\u00A0(__\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0/\u00A0/\n
-  \u00A0\u00A0\u00A0\\\u00A0\\\u00A0\u00A0\\_\u00A0\u00A0\u00A0\u00A0\u00A0_/\u00A0\u00A0\\\u00A0\u00A0\u00A0/\u00A0\u00A0\u00A0\u00A0\\_\u00A0\u00A0\u00A0\u00A0\u00A0_/\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0/\u00A0/\n
-  \u00A0\u00A0\u00A0\u00A0\\\u00A0\\\u00A0\u00A0\u00A0)\u00A0\u00A0\u00A0\u00A0\\\u00A0\u00A0\u00A0\u00A0\\_/\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0)\u00A0\u00A0\u00A0\u00A0\\\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0/\u00A0/\n
-  \u00A0\u00A0\u00A0\u00A0\u00A0\\/\u00A0\u00A0\u00A0\\/\\|\\/\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\\/\\|\\/\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\\/\n
-`
+interface Props {}
 
-const history = [
-  { value: pikachu },
-  { value: `>>` },
-  { value: `>> PIKACHU SAYS: LET\'S PLAY` },
-  { value: '>> TYPE help TO START' },
-]
-
-const newDir = {
-  newFile: { content: "I'm Empty" }
-}
-
-const structure = { newDir }
-
-interface IProps {}
-interface IState {
-  loading?: boolean
-  result?: string
+interface State {
   input?: string
-  apiResults?: string[]
+  message?: string
+  currentPokemon?: PokemonProps
+  currentOpponent?: PokemonProps
+  report: ReportProps
 }
-export class Pokemon extends React.Component<IProps, IState> {
-  constructor(props: IProps) {
+
+interface ReportProps {
+  userXP?: number
+  availablePokemon?: [],
+  wins?: []
+  losses?: []
+}
+
+interface PokemonProps {
+  abilities?: [],
+  moves?: {},
+  name?: string,
+  types?: [],
+  species?: string,
+  stats?: {
+    hp: number,
+    attack: number,
+    defense: number,
+    speed: number,
+  },
+  height?: number, // decimetres
+  weight?: number, // hectograms
+}
+
+export class Pokemon extends React.Component<Props, State> {
+  constructor(props: Props) {
     super(props)
     this.state = {
-      // loading: false,
-      // result: '',
       input: '',
-      apiResults: []
+      message: '',
+      report: {},
     }
-
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevState.loading !== this.state.loading) {
-      console.log("loading", this.state)
-    }
     if (prevState.input !== this.state.input) {
-      if (this.state.input.startsWith('play')) {
-        const monster = this.state.input.split(' ')[1]
-        this.resolvePokemon(monster)
+      const inputArr = this.state.input.toLowerCase().split(' ')
+      const cmd = inputArr[0]
+      const arg = inputArr[1]
+
+      if (cmd === 'play') {
+        if (arg === 'random') {
+          this.returnPokemon(getRandomInteger())
+        } else if (arg) {
+          this.returnPokemon(arg)
+        } else {
+          this.setState({  message: pokemonRules })
+        }
+      } else if (cmd === 'battle') {
+        // maybe have opponent return most similar move,
+        // or do that half the time to appear smart
+        if (!isEmpty(this.state.currentPokemon)) {
+          this.returnOpponent()
+        } else {
+          this.setState({
+            message: 'You need to pick a pokemon before battling'
+          })
+        }
+      } else if (cmd === 'forfeit') {
+        const opponentName = toCapitalCase(this.state.currentOpponent.name)
+        this.setState({
+          currentOpponent: {},
+          message: `${opponentName} has left the ring. How about someone a little easier?`
+          })
+      } else if (cmd === 'use') {
+
       }
+      this.setState({ input: '' })
     }
   }
 
-  getPokemon = async (pok) => {
-    return await axios.get(`https://pokeapi.co/api/v2/pokemon/${pok}`)
-  }
-
-  resolvePokemon = (monster) => {
-    this.getPokemon(monster).then(res => {
+  returnPokemon = (monster:string | number) => {
+    getPokemon(monster).then(res => {
+      const transformedData = transformPokemonData(res.data)
+      console.log(transformedData)
       this.setState({
-        apiResults: [`${res.data['species'].name} has ${res.data['abilities'].length} abilities: ${res.data['abilities'].map(ability => ability.ability['name']).join(' and ')}.`],
-        // loading: false,
-        input: '',
+        message: formatResponse(transformedData)['pokemon'],
+        currentPokemon: transformedData
       })
     }).catch(err => this.setState({
-      apiResults: [`${monster} is not a real pokemon! Check your spelling?`],
-      input: '',
+      message: returnError(monster, 'pokemon'),
     }))
   }
 
-  sendResults = () => {
-
-  }
-
-  play = {
-    exec: (state) => {
-      return Object.assign({}, state, {
-        loading: true,
+  returnMove = (monster:string) => {
+    getPokemon(monster).then(res => {
+      this.setState({
+        message: formatResponse(res.data)['pokemon'],
       })
-    },
+    }).catch(err => this.setState({
+      message: returnError(monster, 'pokemon'),
+    }))
   }
-  extensions = { play: this.play }
+
+  returnOpponent = () => {
+    getOpponent().then(res => {
+      const transformedData = transformPokemonData(res.data)
+      this.setState({
+        message: formatResponse(transformedData)['opponent'],
+        currentOpponent: transformedData,
+      })
+    }).catch(err => this.setState({
+      message: 'Looks like that opponent is busy. Try again later!'
+    }))
+  }
+
 
   render() {
-    console.log("pokemon", this.state)
     return (
       <div>
         <Terminal
-          extensions={this.extensions}
+          extensions={extensions}
           structure={structure}
           history={history}
-          apiResults={this.state.apiResults}
-          // loading={this.state.loading}
+          prefix="player1@pokemaster"
+          message={this.state.message}
           getTerminalInput={input => this.setState({ input })}
-
+          currentPokemon={this.state.currentPokemon}
+          currentOpponent={this.state.currentOpponent}
         />
       </div>
     )
@@ -119,29 +150,3 @@ export class Pokemon extends React.Component<IProps, IState> {
 }
 
 export default Pokemon
-
-// export interface Props {
-//   name: string;
-//   enthusiasmLevel?: number;
-// }
-
-// function Pokemon({ name, enthusiasmLevel = 1 }: Props) {
-//   if (enthusiasmLevel <= 0) {
-//     throw new Error('You could be a little more enthusiastic. :D');
-//   }
-
-//   return (
-//     <div className="hello">
-//       <div className="greeting">
-//         Hello {name + getExclamationMarks(enthusiasmLevel)}
-//       </div>
-//     </div>
-//   );
-// }
-
-// export default Pokemon;
-// // helpers
-
-// function getExclamationMarks(numChars: number) {
-//   return Array(numChars + 1).join('!');
-// }

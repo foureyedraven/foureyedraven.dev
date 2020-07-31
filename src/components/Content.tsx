@@ -58,7 +58,7 @@ const styles = {
     borderBottom: '2px solid #4e4'
   },
   demoWell: {
-    height: 500,
+    height: 550,
     width: 600,
     padding: 15,
     marginBottom: 30,
