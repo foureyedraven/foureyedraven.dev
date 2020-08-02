@@ -2,30 +2,74 @@
 // If in backticks, probably ends up in <pre> tag,
 // so preserving whitespace is important
 
+
 /*  - - - - - - - - - - - - -  */
 /*  Pokemon Ascii Art          */
 /*  - - - - - - - - - - - - -  */
 
-export const pikachu_v2 =`
-  \u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0/\\\u00A0\u00A0/\\\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0/\\________\u00A0\u00A0\u00A0\u00A0\u00A0\\\\\\\\\\
-  \u00A0\u00A0\u00A0\u00A0\u00A0\u00A0/\u00A0/\u00A0\u00A0)/\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0/\u00A0/\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\\\\\\\\\\\\\\\\\u00A0\u00A0\u00A0
-  \u00A0\u00A0\u00A0\u00A0\u00A0/\u00A0/\u00A0\u00A0\u00A0\u00A0\u00A0______\u00A0\u00A0\u00A0______\u00A0\u00A0\u00A0______\u00A0\u00A0\u00A0\u00A0/\u00A0/\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\\\\\\\\\\\\\\\u00A0\u00A0\u00A0\u00A0
-  \u00A0\u00A0\u00A0\u00A0/\u00A0/\u00A0\u00A0\u00A0\u00A0\u00A0/_____/\u00A0\u00A0/_____/\u00A0\u00A0/_____/\u00A0\u00A0\u00A0/\u00A0/\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\\\\\\\\\\\u00A0\u00A0\u00A0\u00A0\u00A0
-  \u00A0\u00A0\u00A0/\u00A0/\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0/\u00A0/\u00A0\u00A0\u00A0\u00A0\u00A0_______\\\\\\\\\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0
-  \u00A0\u00A0\u00A0\\/\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\\/\u00A0\u00A0\u00A0\u00A0\u00A0/\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0
-  \u00A0\u00A0\u00A0\u00A0\u00A0/\\\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0___\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0___\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0/\\\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0
-  \u00A0\u00A0\u00A0\u00A0/\u00A0/\u00A0\u00A0\u00A0\u00A0\u00A0/\u00A0\u00A0/\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0/\u00A0\u00A0/\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0/\u00A0/\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0
-  \u00A0\u00A0\u00A0/\u00A0/\u00A0\u00A0\u00A0\u00A0\u00A0/\u00A0\u00A0/\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0/\u00A0\u00A0/\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0/\u00A0/\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0
-  \u00A0\u00A0/\u00A0/\u00A0\u00A0\u00A0\u00A0\u00A0(\u00A0\u00A0(\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0(\u00A0\u00A0(\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0/\u00A0/\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0
-  \u00A0/\u00A0/\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\\\u00A0\u00A0\\\u00A0\u00A0\u00A0\u00A0/\\\u00A0\u00A0\u00A0\u00A0\u00A0\\\u00A0\u00A0\\\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0/\u00A0/\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0
-  \u00A0\\/\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\\__\\\u00A0\u00A0\u00A0\\/\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\\__\\\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\\/\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0
-  /\\\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0/\\\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0
-  \\\u00A0\\\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0____\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0____\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0/\u00A0/\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0
-  \u00A0\\\u00A0\\\u00A0\u00A0\u00A0\u00A0/====\\\u00A0\u00A0\u00A0______\u00A0\u00A0\u00A0\u00A0\u00A0/====\\\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0/\u00A0/\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0
-  \u00A0\u00A0\\\u00A0\\\u00A0\u00A0(===*==)\u00A0\\\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0/\u00A0\u00A0\u00A0(===*==)\u00A0\u00A0\u00A0\u00A0/\u00A0/\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0
-  \u00A0\u00A0\u00A0\\\u00A0\\\u00A0\u00A0\\====/\u00A0\u00A0\u00A0\\____/\u00A0\u00A0\u00A0\u00A0\u00A0\\====/\u00A0\u00A0\u00A0\u00A0/\u00A0/\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0
-  \u00A0\u00A0\u00A0\u00A0\\/\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\\/\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\n
+export const PIKACHU_V2 =`
+         /\\  /\\                              /\\________     \\\\\\\\\\
+        / /  )/                             / /         \\\\\\\\\\\\\\\\
+       / /     ______   ______   ______    / /          \\\\\\\\\\\\\\
+      / /     /_____/  /_____/  /_____/   / /           \\\\\\\\\\
+     / /                                 / /     _______\\\\\\\\
+     \\/                                  \\/     /
+       /\\      ___            ___              /\\
+      / /     /  /           /  /             / /
+     / /     /  /           /  /             / /
+    / /     (  (           (  (             / /
+   / /       \\  \\    /\\     \\  \\           / /
+   \\/         \\__\\   \\/      \\__\\          \\/
+  /\\                                        /\\
+  \\ \\      ____                ____        / /
+   \\ \\    /====\\   ______     /====\\      / /
+    \\ \\  (===*==) \\      /   (===*==)    / /
+     \\ \\  \\====/   \\____/     \\====/    / /
+      \\/                                \\/                         \n
 `
+export const MAGIKARP_V1 = `
+                                __.--.._,-'""-.
+                            ,-' .' ,'  .-"''-.\`.       .--.
+                          ,'    |  |  '\`-.    \\ \\       \`-.|
+                          /       .   /    \`.   \\ \\        ||
+                        /         \`..\`.    \`.   \\ .       ||
+                        /        . .    \`.    \\   . .      '.
+              ."-.    .  ,""'-. | |      \\    \\   \`.\`.__,'.'
+                \`. \`. .   |     \`. |       \\    .    \`-..-'
+      _______     .  \`|   |   '   .'        .   |...--._
+      \`.     \`"--.'   '    .      | .        .  |""''"-._"-._
+        \`.             \\    \`-._..'. .       |  |---.._  \`-.__"-..
+  -.     \`.           |\\           \`.\`      |  |'\`-.  \`-._   +"-'
+  \`.\`.     \`-.        | \`            .\`.       | \`. \`.    \`,"
+    \`.\`.      \`.      |  '.           \` \`      \`.  \\  \`   /
+    | \`.\`.    __\`.    |\`/  \`.     ...  \`.\`.     |   \`.   .
+    |   \\ .  \`._      | \`. / \`. .'.' |   \\ \\    |     \\  |
+    |.   \` \\    \`-.   |   \\   .'.'/' |    \\ \\   |      ._'
+    | \`.  \`.\\      \`. |    \\ / , '.  |_    . \\  '-.
+    ,     .  .\\       \`|     . ' / |  | \`-...\\ \\'   \`._
+    \`.     \`.  \\       |.    '/ .  |  |       ' .      \`-.
+    .\`._    \\\` \\      | \`. /'  '  |  |       | |       ,.'
+      .  \`-.  \\\`.\\    ,|   //  '   |  |__  .' | |      |
+      |     \`._\`| \`--' \`  //  .    |  '  \`"  /| |   . -'
+      '        \`|       \`//   '    |   .    / | |   |
+    /....._____|       //   .  ___|   |   /  | |  ,|
+    .         _.'      /, _.--"'-._ \`".| ,'   | |.'
+    |      _,' / ___   \`-'.        \`. _|'     |,
+    |  _,-"  ,'.'   \`-.._  \`.      _,'         \`
+    '-"   _,','          "- ....--'
+  /  _.-"_.'
+  /_,'_,-'
+.'_.-'
+'"
+`
+
+export const SUCCESS = MAGIKARP_V1.concat(`\n
+            #########                    #########
+              #######  CONGRATS  500 XP  #######
+                #####                    #####
+                  ###                    ###
+                    #                    #
+\n\n`)
 
 /*  - - - - - - - - - - - - -  */
 /*  Pokemon Gameplay Text      */
@@ -35,10 +79,10 @@ export const  pokemonRules = `
 ##### COMMANDS ####
 
 play            Shows you the rules & commands
-play {name}     Chooses pokemon and shows stats
-play random     Chooses a random pokemon for you
-battle          Begins battle with chosen pokemon
-use {move}      Uses a move seen in stats
+report          Shows your Pokemon, experience, & history
+play {name}     Chooses Pokemon and shows its stats
+battle          Begins battle with chosen Pokemon
+use {move}      Uses a move seen in play {name}
 forfeit         Ends battle with no penalties
 help            See other commands available
 
@@ -47,22 +91,31 @@ help            See other commands available
 ### HOW TO PLAY ###
 ###################
 
-1.  Pick a pokemon to play by typing \'play {name}\',
-    where {name} is a pokemon, e.g. play pikachu. You
-    will battle with the last pokemon you chose.
+1.  Pick a Pokemon to play by typing \'play {name}\'. Your
+    first Pokemon is Pikachu, so, play pikachu
 
-2.  When you're ready to battle, type: \'battle\'
-    A random pokemon will appear to fight!
+2.  When you're ready, type: \'battle\'
+    A random Pokemon will appear to fight!
 
-3.  Use your pokemon's moves ['use {move}'] against your
+3.  Use your Pokemon's moves ['use {move}'] against your
     opponent until you win or lose.
 
 4.  Sick of fighting? Type \'forfeit\' to end the
     battle with no penalties.
 
+TIPS: • Your battle move effect and Pokemon HP goes up
+        proportional to your Player XP!
+      • Something special happens when you reach 500 XP!
+
 ##### FORGOT? #####
-Just type \'play\' to see these rules again.
+TYPE \'play\' TO SEE THESE RULES.
 \n`
+
+const credits = `
+API data provided by https://pokeapi.co/
+Magikarp ASCII art created by fiikus http://www.fiikus.net/asciiart/pokemon/129.txt
+Damage formula from the games, via https://bulbapedia.bulbagarden.net/wiki/Damage
+`
 
 
 /*  - - - - - - - - - - - - -  */
@@ -82,6 +135,7 @@ export const extensions = {
   use: baseCommand,
   battle: baseCommand,
   forfeit: baseCommand,
+  report: baseCommand,
 }
 // ['play', 'use', 'battle', 'forfeit']
 //   .reduce((acc, curr) =>
@@ -90,14 +144,15 @@ export const extensions = {
 
 
 const newDir = {
+  README: { content: pokemonRules },
   newFile: { content: "I'm Empty" }
 }
 
 export const history = [
-  { value: pikachu_v2 },
+  { value: PIKACHU_V2 },
   { value: `>> PIKACHU SAYS: ` },
-  { value: '>> "TYPE play TO START"' },
+  { value: '>> "PIKA PIKA!"' },
+  { value: '>> TYPE play TO START' },
 ]
 
 export const structure = { newDir }
-
