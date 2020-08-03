@@ -1,5 +1,6 @@
 import * as React from "react"
 import { TabState } from "./constants"
+import Pokemon from "./demos/pokemon"
 
 const styles = {
   main: {
@@ -57,7 +58,7 @@ const styles = {
     borderBottom: '2px solid #4e4'
   },
   demoWell: {
-    height: 450,
+    height: 550,
     width: 600,
     padding: 15,
     marginBottom: 30,
@@ -124,15 +125,13 @@ const Profile = () => {
 
 const Demo = ({ data }) => {
   return (
-    <div style={styles.demoWell}>
+    <div style={styles.demoWell} key={data.title}>
       <div>
         <h2>{data.title}</h2>
       </div>
       <p style={{ fontWeight: 400 }}>{data.subtitle}</p>
       <div style={{ margin: 33 }}>
-        <p style={{ fontSize: 16, color: '#444' }}>
-          {data.url.length ? data.url : "Coming Soon..."}
-        </p>
+        {!!data.component ? React.createElement(data.component) : <p style={{ fontSize: 16, color: '#444' }}>Coming Soon...</p>}
       </div>
     </div>
   )
@@ -158,18 +157,18 @@ const demos = {
   pokemon: {
     title: 'Pokemon API Battle Game',
     subtitle: 'play a terminal Pokemon game that uses a Pokedex API',
-    start: 'type \'help\' into the terminal and send',
-    url: '',
+    start: 'type \'help\' into the terminal to start',
+    component: Pokemon, // shows github code, and links
     // maybe saving high scores? which db? mongodb?
     // websocket to play against another player? (sign in code?)
   },
-  userData: {
-    title: 'You on the Web',
-    subtitle: 'what web browsers see when you use them',
-    start: 'We\'ve already grabbed some data from your browser, take a look.',
-    url: '',
-    // system details, geolocation, wifi? signed-in accounts? fb data, ad data?
-  },
+  // userData: {
+  //   title: 'You on the Web',
+  //   subtitle: 'what web browsers see when you use them',
+  //   start: 'We\'ve already grabbed some data from your browser, take a look.',
+  //   url: '',
+  //   // system details, geolocation, wifi? signed-in accounts? fb data, ad data?
+  // },
   satellites: {
     title: 'What\'s Above You',
     subtitle: 'watch an animation of the satellites in your current sky',
@@ -211,7 +210,7 @@ interface NavTabsState {
 export class Content extends React.Component<{}, NavTabsState> {
   constructor(props: {}) {
     super(props);
-    this.state = { tabState: "Profile" };
+    this.state = { tabState: "Demos" };
 
   }
   render() {

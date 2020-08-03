@@ -11,7 +11,7 @@ const footer = {
   borderColor: '#111',
   alignSelf: 'flex-start',
   width: '100%',
-  position: 'fixed',
+  position: 'fixed' as 'fixed', // TS needed prop cast to string
   bottom: 0,
   left: 0,
 }
@@ -37,7 +37,7 @@ export class Footer extends React.Component<{}, any> {
       <div style={footer}>
         <div>
           {Object.keys(links).map(link => (
-            <a key={link} style={text} target="_blank">{link}</a>
+            <a key={link} href={links[link]} style={text} target="_blank">{link}</a>
           ))}
         </div>
       </div>
