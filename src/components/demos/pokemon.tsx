@@ -4,6 +4,14 @@
   an interactive Pokemon battle game in the client.
 */
 
+// TODO
+// make points in battle clearer
+// make first opponent always easy (diglett?)
+// make the moves easier to use (autocomplete?)
+// make instructions from step to step clearer
+// only show report on a win?
+
+
 import * as React from 'react'
 import Terminal from 'react-bash-typescript'
 import { isEmpty } from 'lodash'
@@ -313,8 +321,6 @@ export class Pokemon extends React.Component<Props, State> {
           loading={this.state.loading}
           getTerminalInput={input => this.setState({ input })}
           resetMessage={() => this.setState({ message: '' })}
-          currentPokemon={this.state.players.user} // <-- what are these for? need to keep terminal light
-          currentOpponent={this.state.players.opponent} // <-- what are these for? need to keep terminal light
         />
       </div>
     )
