@@ -91,17 +91,16 @@ help            See other commands available
 ### HOW TO PLAY ###
 ###################
 
-1.  Type \'play {name}\' to play a Pokemon.
-    Your first Pokemon is Pikachu, so, play pikachu
+1.  Type \'play pikachu\' to play your first Pokemon
+    and see what moves you can use in battle.
 
-2.  When you're ready, type \'battle\'
+2.  Type \'battle\'.
     A random Pokemon will appear to fight!
 
-3.  Use your Pokemon's moves ['use {move}'] against
-    your opponent until you win or lose.
+3.  Type \'use {move}\' to use moves for your chosen Pokemon.
+    Keep fighting your opponent until you win or lose.
 
-4.  Sick of fighting? Type \'forfeit\' to end the
-    battle with no penalties.
+4.  If you win, you keep the Pokemon and gain XP!
 
 TIPS: • Your battle move effect and Pokemon HP go up
         with your Player XP!
