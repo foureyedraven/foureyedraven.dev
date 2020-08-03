@@ -17,6 +17,12 @@ module.exports = [
     resolve: {
       extensions: ['.ts', '.tsx', '.js', '.jsx']
     },
+    node: {
+      console: true,
+      fs: 'empty',
+      net: 'empty',
+      tls: 'empty'
+    },
     output: {
       filename: '[name].js',
       path: path.resolve(__dirname, 'dist/js')

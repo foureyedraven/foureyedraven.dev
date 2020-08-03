@@ -1,5 +1,5 @@
 // Functions for gameplay
-import { toCapitalCase, getCorrectParticle, getRandomFloat } from '../../utils'
+import { toCapitalCase, getCorrectParticle, getRandomFloat } from '../../../utils'
 
 /*  - - - - - - - - - - - - -  */
 /*  Data formatting functions  */
@@ -12,7 +12,8 @@ export const returnError = (val?:string | number, type?:string) => {
 
 export const returnUnavailable = data => {
   return `
-  Sorry, that Pokemon is not available to you. Try one of these:
+Sorry, that Pokemon is not available to you. Try one of these:
+
   ${data.join('\n')}
         `
 }
@@ -26,7 +27,7 @@ PLAYER XP: ${data.userXP}
 AVAILABLE POKEMON:
 
 ${'  ' + data.availablePokemon.map((pokemon, i, arr) =>
-  pokemon + (!(i%2) ? i != arr.length - 1 ? '    ' : '\n' : '\n  ')
+  pokemon + (!(i%2) ? i != arr.length - 1 ? ' \t' : '\n' : '\n  ')
 ).join('')}
 WINS:
 

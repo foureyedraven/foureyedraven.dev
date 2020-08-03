@@ -81,7 +81,7 @@ export const  pokemonRules = `
 play            Shows you the rules & commands
 report          Shows your Pokemon, experience, & history
 play {name}     Chooses Pokemon and shows its stats
-battle          Begins battle with chosen Pokemon
+battle          Begins battle with random Pokemon
 use {move}      Uses a move seen in play {name}
 forfeit         Ends battle with no penalties
 help            See other commands available
@@ -91,20 +91,20 @@ help            See other commands available
 ### HOW TO PLAY ###
 ###################
 
-1.  Pick a Pokemon to play by typing \'play {name}\'. Your
-    first Pokemon is Pikachu, so, play pikachu
+1.  Type \'play {name}\' to play a Pokemon.
+    Your first Pokemon is Pikachu, so, play pikachu
 
-2.  When you're ready, type: \'battle\'
+2.  When you're ready, type \'battle\'
     A random Pokemon will appear to fight!
 
-3.  Use your Pokemon's moves ['use {move}'] against your
-    opponent until you win or lose.
+3.  Use your Pokemon's moves ['use {move}'] against
+    your opponent until you win or lose.
 
 4.  Sick of fighting? Type \'forfeit\' to end the
     battle with no penalties.
 
-TIPS: • Your battle move effect and Pokemon HP goes up
-        proportional to your Player XP!
+TIPS: • Your battle move effect and Pokemon HP go up
+        with your Player XP!
       • Something special happens when you reach 500 XP!
 
 ##### FORGOT? #####
@@ -137,11 +137,6 @@ export const extensions = {
   forfeit: baseCommand,
   report: baseCommand,
 }
-// ['play', 'use', 'battle', 'forfeit']
-//   .reduce((acc, curr) =>
-//     acc[curr] = this.baseCommand,
-//   {})
-
 
 const newDir = {
   README: { content: pokemonRules },
@@ -156,3 +151,18 @@ export const history = [
 ]
 
 export const structure = { newDir }
+
+
+// IDEA BANK
+
+/*
+  TODO
+  test serving content split at \n in terminal
+  update terminal README
+  add message if loading fails? test offline, add msg to Terminal
+  add github inset text for demo
+  add autocomplete to moves and pokemon
+  add randomized commentary (increasingly personal or odd)
+  let user save progress in cache += save leaderboard on some server
+  add regions and weather
+*/

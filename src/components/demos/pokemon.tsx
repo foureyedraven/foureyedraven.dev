@@ -4,43 +4,12 @@
   an interactive Pokemon battle game in the client.
 */
 
-/*
-  Gives sense of accomplishment (addictive).
-  (Report overall stats each game, desire to round up numbers
-  (use larger increments, challenge people to reach a level)).
-  Should give pointers on what to do at the beginning to accomplish some goal.
-  Gives sense of adventure. (Maybe add regions you can go to. Or restrict V1 to certain region)
-  The more you play, the higher your XP, and higher the range of pokemon you can choose.
-  Or, you capture who you defeat. (desire to save progress, or accomplish more, ability to see accomplishments (battles, captured pokemon))
-  randomize commentary, and get more complex and comedic/weirdly personal as things go on, a la warcraft npcs
-  save progress in cache? initial state will pull from cache
-
-  what's to stop ppl just using the best attack each time?
-  can use the pp. or, inverse of their power
-  but then we have to track the moves used. Which may be ok...
-  Or, make the power of their move porportional to their hp: weaker they are, less powerful move they can use.
-  User starts with a single pokemon - pikachu?
-*/
-
-/*
-  TODO
-  add loading animation command
-  test serving content split at \n in terminal
-  update terminal README
-  add win magikarp animation (maybe do reverse magikarp on lose)
-  add message if loading fails? test offline, add msg to Terminal
-  consider limiting opponent pokemon to a ratio of user's available pokemon (still could have charizard etc...)
-  add github inset text for demo
-  consider adding an ascii art for pokemon per move played (get from fiikus? via crawling?)
-  add increase in base HP depending on user XP level
-*/
-
 import * as React from 'react'
 import Terminal from 'react-bash-typescript'
 import { isEmpty } from 'lodash'
-import { toCapitalCase, getRandomInteger } from '../utils'
+import { toCapitalCase, getRandomInteger } from '../../utils'
 import { pokemonRules, history, structure, extensions, SUCCESS } from './pokemon/data'
-import { getPokemon, getMove } from './pokemon/api'
+import { getPokemon, getMove, getAsciiArt } from './pokemon/api'
 import {
   returnError,
   returnUnavailable,
@@ -62,6 +31,7 @@ interface State {
     opponent: PokemonProps | undefined
   }
   report: ReportProps
+  loading: boolean
 }
 
 interface ReportProps {
@@ -74,7 +44,7 @@ interface ReportProps {
 interface PokemonProps {
   id: number
   abilities: []
-  moves: {}
+  moves: string[]
   name: string
   types: []
   stats: {
@@ -107,6 +77,7 @@ export class Pokemon extends React.Component<Props, State> {
         wins: [],
         losses: [],
       },
+      loading: false
     }
   }
 
@@ -158,7 +129,11 @@ export class Pokemon extends React.Component<Props, State> {
           })
       } else if (cmd === 'use') {
         if (arg) {
-          this.returnMove(arg)
+          if (this.state.players.user.moves.includes(arg)) {
+            this.returnMove(arg)
+          } else {
+            this.setState({ message: 'Your Pokemon doesn\'t have that move!'})
+          }
         } else {
           this.setState({
             message: 'Use what?'
@@ -176,8 +151,12 @@ export class Pokemon extends React.Component<Props, State> {
       } else if (this.state.players.opponent.stats.hp <= 0) {
         this.endBattle(true)
       } else if (this.state.currPlayer === "opponent") {
-        const randomMove = this.state.players.opponent.moves[getRandomInteger(0, 9)]
-        this.returnMove(randomMove)
+        this.setState({ loading: true})
+        setTimeout(() => {
+          const randomMove = this.state.players.opponent.moves[getRandomInteger(0, 9)]
+          this.returnMove(randomMove)
+          this.setState({ loading: false})
+        }, 1000)
       }
     }
 
@@ -191,11 +170,22 @@ export class Pokemon extends React.Component<Props, State> {
 
   returnPokemon = (monster:string | number) => {
     getPokemon(monster).then(res => {
+      // A chosen Pokemon's HP and attack stat goes up with user XP
+      const hp = res.stats.hp + Math.floor(this.state.report.userXP / 15)
+      const attack = res.stats.hp + Math.floor(this.state.report.userXP / 20)
+      const pokemon = {
+        ...res,
+        stats: {
+          ...res.stats,
+          hp,
+          attack
+        }
+      }
       this.setState({
-        message: formatPokemonResponse(res)['pokemon'],
+        message: formatPokemonResponse(pokemon)['pokemon'],
         players: {
           ...this.state.players,
-          user: res
+          user: pokemon
         }
       })
     }).catch(err => this.setState({
@@ -205,8 +195,13 @@ export class Pokemon extends React.Component<Props, State> {
 
   returnOpponent = () => {
     getPokemon(getRandomInteger(1, 129)).then(res => {
+      // Show ASCII art of opponent
+      const id = res.id + ""
+      getAsciiArt(id.padStart(3, '0')).then(res => this.setState({ message: res.data }) )
+        .catch(err => console.log(err))
+
       this.setState({
-        message: formatPokemonResponse(res)['opponent'],
+        message: formatPokemonResponse(res)['opponent'].concat(),
         players: {
           ...this.state.players,
           opponent: res
@@ -220,8 +215,9 @@ export class Pokemon extends React.Component<Props, State> {
   returnMove = (move:string) => {
     const attackerKey = this.state.currPlayer
     const defenderKey = this.state.currPlayer === "user" ? "opponent" : "user"
-    // The more you play and gain XP, the more effect your attacks are,
-    // no matter what pokemon you use (but pokemon matters, too)
+    // The more you play and gain XP, the more effect your, and your opponent's,
+    // attacks are, no matter what pokemon you use (but pokemon matters, too).
+    // In original game, opponents get more difficult as you progress.
     const level = Math.floor(this.state.report.userXP/10)
     // Get move data and display its message
     getMove(move).then((res) => {
@@ -234,6 +230,7 @@ export class Pokemon extends React.Component<Props, State> {
       })
       this.setState({
         currPlayer: this.state.currPlayer === "user" ? "opponent" : "user",
+        // Run . . . animation in terminal
         message: formatMoveResponse({
           move: res,
           damage,
@@ -313,6 +310,7 @@ export class Pokemon extends React.Component<Props, State> {
           history={history}
           prefix="player1@pokemaster"
           message={this.state.message}
+          loading={this.state.loading}
           getTerminalInput={input => this.setState({ input })}
           resetMessage={() => this.setState({ message: '' })}
           currentPokemon={this.state.players.user} // <-- what are these for? need to keep terminal light

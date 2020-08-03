@@ -577,9 +577,18 @@ var Terminal = /** @class */ (function (_super) {
     Terminal.prototype.componentDidUpdate = function (prevProps, prevState) {
         // Keep input in view when interacting with component.
         this.body.current.scrollTo(0, this.body.current.scrollHeight);
-        // Handle changes in Terminal component
+        // Handle loading animation in Terminal component
         if (prevState.loading !== this.state.loading) {
             if (this.state.loading) {
+                this.renderLoadingAnimation();
+            }
+            else {
+                this.clearLoadingAnimation();
+            }
+        }
+        // Handle parent request for loading animation
+        if (prevProps.loading !== this.props.loading) {
+            if (this.props.loading) {
                 this.renderLoadingAnimation();
             }
             else {
@@ -599,6 +608,10 @@ var Terminal = /** @class */ (function (_super) {
      * Forward the input along to the Bash autocompleter. If it works,
      * update the input.
      */
+    // keydown returns undefined
+    // is there a better way to show empty lines
+    // but to also not have empty histories?
+    // autocomplete should filter history to not have empty lines
     Terminal.prototype.attemptAutocomplete = function () {
         var input = this.input.current.value;
         var suggestion = this.Bash.autocomplete(input, this.state);
@@ -1239,7 +1252,7 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/**
+/* WEBPACK VAR INJECTION */(function(console) {/**
  * Copyright (c) 2013-present, Facebook, Inc.
  *
  * This source code is licensed under the MIT license found in the
@@ -1342,6 +1355,7 @@ checkPropTypes.resetWarningCache = function() {
 
 module.exports = checkPropTypes;
 
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../foureyedraven.dev/node_modules/console-browserify/index.js */ "./node_modules/console-browserify/index.js")))
 
 /***/ }),
 
@@ -1353,7 +1367,7 @@ module.exports = checkPropTypes;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/**
+/* WEBPACK VAR INJECTION */(function(console) {/**
  * Copyright (c) 2013-present, Facebook, Inc.
  *
  * This source code is licensed under the MIT license found in the
@@ -1945,6 +1959,7 @@ module.exports = function(isValidElement, throwOnDirectAccess) {
   return ReactPropTypes;
 };
 
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../foureyedraven.dev/node_modules/console-browserify/index.js */ "./node_modules/console-browserify/index.js")))
 
 /***/ }),
 
@@ -2006,7 +2021,7 @@ module.exports = ReactPropTypesSecret;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/** @license React v16.13.1
+/* WEBPACK VAR INJECTION */(function(console) {/** @license React v16.13.1
  * react-is.development.js
  *
  * Copyright (c) Facebook, Inc. and its affiliates.
@@ -2188,6 +2203,7 @@ exports.typeOf = typeOf;
   })();
 }
 
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../../foureyedraven.dev/node_modules/console-browserify/index.js */ "./node_modules/console-browserify/index.js")))
 
 /***/ }),
 
@@ -2216,7 +2232,7 @@ if (false) {} else {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/** @license React v16.13.1
+/* WEBPACK VAR INJECTION */(function(console) {/** @license React v16.13.1
  * react.development.js
  *
  * Copyright (c) Facebook, Inc. and its affiliates.
@@ -4129,6 +4145,7 @@ exports.version = ReactVersion;
   })();
 }
 
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../../foureyedraven.dev/node_modules/console-browserify/index.js */ "./node_modules/console-browserify/index.js")))
 
 /***/ }),
 
@@ -4146,6 +4163,525 @@ if (false) {} else {
   module.exports = __webpack_require__(/*! ./cjs/react.development.js */ "../react-bash-typescript/node_modules/react/cjs/react.development.js");
 }
 
+
+/***/ }),
+
+/***/ "./node_modules/assert/assert.js":
+/*!***************************************!*\
+  !*** ./node_modules/assert/assert.js ***!
+  \***************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(global) {
+
+var objectAssign = __webpack_require__(/*! object-assign */ "./node_modules/object-assign/index.js");
+
+// compare and isBuffer taken from https://github.com/feross/buffer/blob/680e9e5e488f22aac27599a57dc844a6315928dd/index.js
+// original notice:
+
+/*!
+ * The buffer module from node.js, for the browser.
+ *
+ * @author   Feross Aboukhadijeh <feross@feross.org> <http://feross.org>
+ * @license  MIT
+ */
+function compare(a, b) {
+  if (a === b) {
+    return 0;
+  }
+
+  var x = a.length;
+  var y = b.length;
+
+  for (var i = 0, len = Math.min(x, y); i < len; ++i) {
+    if (a[i] !== b[i]) {
+      x = a[i];
+      y = b[i];
+      break;
+    }
+  }
+
+  if (x < y) {
+    return -1;
+  }
+  if (y < x) {
+    return 1;
+  }
+  return 0;
+}
+function isBuffer(b) {
+  if (global.Buffer && typeof global.Buffer.isBuffer === 'function') {
+    return global.Buffer.isBuffer(b);
+  }
+  return !!(b != null && b._isBuffer);
+}
+
+// based on node assert, original notice:
+// NB: The URL to the CommonJS spec is kept just for tradition.
+//     node-assert has evolved a lot since then, both in API and behavior.
+
+// http://wiki.commonjs.org/wiki/Unit_Testing/1.0
+//
+// THIS IS NOT TESTED NOR LIKELY TO WORK OUTSIDE V8!
+//
+// Originally from narwhal.js (http://narwhaljs.org)
+// Copyright (c) 2009 Thomas Robinson <280north.com>
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the 'Software'), to
+// deal in the Software without restriction, including without limitation the
+// rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+// sell copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+// ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+// WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+var util = __webpack_require__(/*! util/ */ "./node_modules/util/util.js");
+var hasOwn = Object.prototype.hasOwnProperty;
+var pSlice = Array.prototype.slice;
+var functionsHaveNames = (function () {
+  return function foo() {}.name === 'foo';
+}());
+function pToString (obj) {
+  return Object.prototype.toString.call(obj);
+}
+function isView(arrbuf) {
+  if (isBuffer(arrbuf)) {
+    return false;
+  }
+  if (typeof global.ArrayBuffer !== 'function') {
+    return false;
+  }
+  if (typeof ArrayBuffer.isView === 'function') {
+    return ArrayBuffer.isView(arrbuf);
+  }
+  if (!arrbuf) {
+    return false;
+  }
+  if (arrbuf instanceof DataView) {
+    return true;
+  }
+  if (arrbuf.buffer && arrbuf.buffer instanceof ArrayBuffer) {
+    return true;
+  }
+  return false;
+}
+// 1. The assert module provides functions that throw
+// AssertionError's when particular conditions are not met. The
+// assert module must conform to the following interface.
+
+var assert = module.exports = ok;
+
+// 2. The AssertionError is defined in assert.
+// new assert.AssertionError({ message: message,
+//                             actual: actual,
+//                             expected: expected })
+
+var regex = /\s*function\s+([^\(\s]*)\s*/;
+// based on https://github.com/ljharb/function.prototype.name/blob/adeeeec8bfcc6068b187d7d9fb3d5bb1d3a30899/implementation.js
+function getName(func) {
+  if (!util.isFunction(func)) {
+    return;
+  }
+  if (functionsHaveNames) {
+    return func.name;
+  }
+  var str = func.toString();
+  var match = str.match(regex);
+  return match && match[1];
+}
+assert.AssertionError = function AssertionError(options) {
+  this.name = 'AssertionError';
+  this.actual = options.actual;
+  this.expected = options.expected;
+  this.operator = options.operator;
+  if (options.message) {
+    this.message = options.message;
+    this.generatedMessage = false;
+  } else {
+    this.message = getMessage(this);
+    this.generatedMessage = true;
+  }
+  var stackStartFunction = options.stackStartFunction || fail;
+  if (Error.captureStackTrace) {
+    Error.captureStackTrace(this, stackStartFunction);
+  } else {
+    // non v8 browsers so we can have a stacktrace
+    var err = new Error();
+    if (err.stack) {
+      var out = err.stack;
+
+      // try to strip useless frames
+      var fn_name = getName(stackStartFunction);
+      var idx = out.indexOf('\n' + fn_name);
+      if (idx >= 0) {
+        // once we have located the function frame
+        // we need to strip out everything before it (and its line)
+        var next_line = out.indexOf('\n', idx + 1);
+        out = out.substring(next_line + 1);
+      }
+
+      this.stack = out;
+    }
+  }
+};
+
+// assert.AssertionError instanceof Error
+util.inherits(assert.AssertionError, Error);
+
+function truncate(s, n) {
+  if (typeof s === 'string') {
+    return s.length < n ? s : s.slice(0, n);
+  } else {
+    return s;
+  }
+}
+function inspect(something) {
+  if (functionsHaveNames || !util.isFunction(something)) {
+    return util.inspect(something);
+  }
+  var rawname = getName(something);
+  var name = rawname ? ': ' + rawname : '';
+  return '[Function' +  name + ']';
+}
+function getMessage(self) {
+  return truncate(inspect(self.actual), 128) + ' ' +
+         self.operator + ' ' +
+         truncate(inspect(self.expected), 128);
+}
+
+// At present only the three keys mentioned above are used and
+// understood by the spec. Implementations or sub modules can pass
+// other keys to the AssertionError's constructor - they will be
+// ignored.
+
+// 3. All of the following functions must throw an AssertionError
+// when a corresponding condition is not met, with a message that
+// may be undefined if not provided.  All assertion methods provide
+// both the actual and expected values to the assertion error for
+// display purposes.
+
+function fail(actual, expected, message, operator, stackStartFunction) {
+  throw new assert.AssertionError({
+    message: message,
+    actual: actual,
+    expected: expected,
+    operator: operator,
+    stackStartFunction: stackStartFunction
+  });
+}
+
+// EXTENSION! allows for well behaved errors defined elsewhere.
+assert.fail = fail;
+
+// 4. Pure assertion tests whether a value is truthy, as determined
+// by !!guard.
+// assert.ok(guard, message_opt);
+// This statement is equivalent to assert.equal(true, !!guard,
+// message_opt);. To test strictly for the value true, use
+// assert.strictEqual(true, guard, message_opt);.
+
+function ok(value, message) {
+  if (!value) fail(value, true, message, '==', assert.ok);
+}
+assert.ok = ok;
+
+// 5. The equality assertion tests shallow, coercive equality with
+// ==.
+// assert.equal(actual, expected, message_opt);
+
+assert.equal = function equal(actual, expected, message) {
+  if (actual != expected) fail(actual, expected, message, '==', assert.equal);
+};
+
+// 6. The non-equality assertion tests for whether two objects are not equal
+// with != assert.notEqual(actual, expected, message_opt);
+
+assert.notEqual = function notEqual(actual, expected, message) {
+  if (actual == expected) {
+    fail(actual, expected, message, '!=', assert.notEqual);
+  }
+};
+
+// 7. The equivalence assertion tests a deep equality relation.
+// assert.deepEqual(actual, expected, message_opt);
+
+assert.deepEqual = function deepEqual(actual, expected, message) {
+  if (!_deepEqual(actual, expected, false)) {
+    fail(actual, expected, message, 'deepEqual', assert.deepEqual);
+  }
+};
+
+assert.deepStrictEqual = function deepStrictEqual(actual, expected, message) {
+  if (!_deepEqual(actual, expected, true)) {
+    fail(actual, expected, message, 'deepStrictEqual', assert.deepStrictEqual);
+  }
+};
+
+function _deepEqual(actual, expected, strict, memos) {
+  // 7.1. All identical values are equivalent, as determined by ===.
+  if (actual === expected) {
+    return true;
+  } else if (isBuffer(actual) && isBuffer(expected)) {
+    return compare(actual, expected) === 0;
+
+  // 7.2. If the expected value is a Date object, the actual value is
+  // equivalent if it is also a Date object that refers to the same time.
+  } else if (util.isDate(actual) && util.isDate(expected)) {
+    return actual.getTime() === expected.getTime();
+
+  // 7.3 If the expected value is a RegExp object, the actual value is
+  // equivalent if it is also a RegExp object with the same source and
+  // properties (`global`, `multiline`, `lastIndex`, `ignoreCase`).
+  } else if (util.isRegExp(actual) && util.isRegExp(expected)) {
+    return actual.source === expected.source &&
+           actual.global === expected.global &&
+           actual.multiline === expected.multiline &&
+           actual.lastIndex === expected.lastIndex &&
+           actual.ignoreCase === expected.ignoreCase;
+
+  // 7.4. Other pairs that do not both pass typeof value == 'object',
+  // equivalence is determined by ==.
+  } else if ((actual === null || typeof actual !== 'object') &&
+             (expected === null || typeof expected !== 'object')) {
+    return strict ? actual === expected : actual == expected;
+
+  // If both values are instances of typed arrays, wrap their underlying
+  // ArrayBuffers in a Buffer each to increase performance
+  // This optimization requires the arrays to have the same type as checked by
+  // Object.prototype.toString (aka pToString). Never perform binary
+  // comparisons for Float*Arrays, though, since e.g. +0 === -0 but their
+  // bit patterns are not identical.
+  } else if (isView(actual) && isView(expected) &&
+             pToString(actual) === pToString(expected) &&
+             !(actual instanceof Float32Array ||
+               actual instanceof Float64Array)) {
+    return compare(new Uint8Array(actual.buffer),
+                   new Uint8Array(expected.buffer)) === 0;
+
+  // 7.5 For all other Object pairs, including Array objects, equivalence is
+  // determined by having the same number of owned properties (as verified
+  // with Object.prototype.hasOwnProperty.call), the same set of keys
+  // (although not necessarily the same order), equivalent values for every
+  // corresponding key, and an identical 'prototype' property. Note: this
+  // accounts for both named and indexed properties on Arrays.
+  } else if (isBuffer(actual) !== isBuffer(expected)) {
+    return false;
+  } else {
+    memos = memos || {actual: [], expected: []};
+
+    var actualIndex = memos.actual.indexOf(actual);
+    if (actualIndex !== -1) {
+      if (actualIndex === memos.expected.indexOf(expected)) {
+        return true;
+      }
+    }
+
+    memos.actual.push(actual);
+    memos.expected.push(expected);
+
+    return objEquiv(actual, expected, strict, memos);
+  }
+}
+
+function isArguments(object) {
+  return Object.prototype.toString.call(object) == '[object Arguments]';
+}
+
+function objEquiv(a, b, strict, actualVisitedObjects) {
+  if (a === null || a === undefined || b === null || b === undefined)
+    return false;
+  // if one is a primitive, the other must be same
+  if (util.isPrimitive(a) || util.isPrimitive(b))
+    return a === b;
+  if (strict && Object.getPrototypeOf(a) !== Object.getPrototypeOf(b))
+    return false;
+  var aIsArgs = isArguments(a);
+  var bIsArgs = isArguments(b);
+  if ((aIsArgs && !bIsArgs) || (!aIsArgs && bIsArgs))
+    return false;
+  if (aIsArgs) {
+    a = pSlice.call(a);
+    b = pSlice.call(b);
+    return _deepEqual(a, b, strict);
+  }
+  var ka = objectKeys(a);
+  var kb = objectKeys(b);
+  var key, i;
+  // having the same number of owned properties (keys incorporates
+  // hasOwnProperty)
+  if (ka.length !== kb.length)
+    return false;
+  //the same set of keys (although not necessarily the same order),
+  ka.sort();
+  kb.sort();
+  //~~~cheap key test
+  for (i = ka.length - 1; i >= 0; i--) {
+    if (ka[i] !== kb[i])
+      return false;
+  }
+  //equivalent values for every corresponding key, and
+  //~~~possibly expensive deep test
+  for (i = ka.length - 1; i >= 0; i--) {
+    key = ka[i];
+    if (!_deepEqual(a[key], b[key], strict, actualVisitedObjects))
+      return false;
+  }
+  return true;
+}
+
+// 8. The non-equivalence assertion tests for any deep inequality.
+// assert.notDeepEqual(actual, expected, message_opt);
+
+assert.notDeepEqual = function notDeepEqual(actual, expected, message) {
+  if (_deepEqual(actual, expected, false)) {
+    fail(actual, expected, message, 'notDeepEqual', assert.notDeepEqual);
+  }
+};
+
+assert.notDeepStrictEqual = notDeepStrictEqual;
+function notDeepStrictEqual(actual, expected, message) {
+  if (_deepEqual(actual, expected, true)) {
+    fail(actual, expected, message, 'notDeepStrictEqual', notDeepStrictEqual);
+  }
+}
+
+
+// 9. The strict equality assertion tests strict equality, as determined by ===.
+// assert.strictEqual(actual, expected, message_opt);
+
+assert.strictEqual = function strictEqual(actual, expected, message) {
+  if (actual !== expected) {
+    fail(actual, expected, message, '===', assert.strictEqual);
+  }
+};
+
+// 10. The strict non-equality assertion tests for strict inequality, as
+// determined by !==.  assert.notStrictEqual(actual, expected, message_opt);
+
+assert.notStrictEqual = function notStrictEqual(actual, expected, message) {
+  if (actual === expected) {
+    fail(actual, expected, message, '!==', assert.notStrictEqual);
+  }
+};
+
+function expectedException(actual, expected) {
+  if (!actual || !expected) {
+    return false;
+  }
+
+  if (Object.prototype.toString.call(expected) == '[object RegExp]') {
+    return expected.test(actual);
+  }
+
+  try {
+    if (actual instanceof expected) {
+      return true;
+    }
+  } catch (e) {
+    // Ignore.  The instanceof check doesn't work for arrow functions.
+  }
+
+  if (Error.isPrototypeOf(expected)) {
+    return false;
+  }
+
+  return expected.call({}, actual) === true;
+}
+
+function _tryBlock(block) {
+  var error;
+  try {
+    block();
+  } catch (e) {
+    error = e;
+  }
+  return error;
+}
+
+function _throws(shouldThrow, block, expected, message) {
+  var actual;
+
+  if (typeof block !== 'function') {
+    throw new TypeError('"block" argument must be a function');
+  }
+
+  if (typeof expected === 'string') {
+    message = expected;
+    expected = null;
+  }
+
+  actual = _tryBlock(block);
+
+  message = (expected && expected.name ? ' (' + expected.name + ').' : '.') +
+            (message ? ' ' + message : '.');
+
+  if (shouldThrow && !actual) {
+    fail(actual, expected, 'Missing expected exception' + message);
+  }
+
+  var userProvidedMessage = typeof message === 'string';
+  var isUnwantedException = !shouldThrow && util.isError(actual);
+  var isUnexpectedException = !shouldThrow && actual && !expected;
+
+  if ((isUnwantedException &&
+      userProvidedMessage &&
+      expectedException(actual, expected)) ||
+      isUnexpectedException) {
+    fail(actual, expected, 'Got unwanted exception' + message);
+  }
+
+  if ((shouldThrow && actual && expected &&
+      !expectedException(actual, expected)) || (!shouldThrow && actual)) {
+    throw actual;
+  }
+}
+
+// 11. Expected to throw an error:
+// assert.throws(block, Error_opt, message_opt);
+
+assert.throws = function(block, /*optional*/error, /*optional*/message) {
+  _throws(true, block, error, message);
+};
+
+// EXTENSION! This is annoying to write outside this module.
+assert.doesNotThrow = function(block, /*optional*/error, /*optional*/message) {
+  _throws(false, block, error, message);
+};
+
+assert.ifError = function(err) { if (err) throw err; };
+
+// Expose a strict only variant of assert
+function strict(value, message) {
+  if (!value) fail(value, true, message, '==', strict);
+}
+assert.strict = objectAssign(strict, assert, {
+  equal: assert.strictEqual,
+  deepEqual: assert.deepStrictEqual,
+  notEqual: assert.notStrictEqual,
+  notDeepEqual: assert.notDeepStrictEqual
+});
+assert.strict.strict = assert.strict;
+
+var objectKeys = Object.keys || function (obj) {
+  var keys = [];
+  for (var key in obj) {
+    if (hasOwn.call(obj, key)) keys.push(key);
+  }
+  return keys;
+};
+
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../webpack/buildin/global.js */ "./node_modules/webpack/buildin/global.js")))
 
 /***/ }),
 
@@ -5959,6 +6495,105 @@ module.exports = {
   trim: trim
 };
 
+
+/***/ }),
+
+/***/ "./node_modules/console-browserify/index.js":
+/*!**************************************************!*\
+  !*** ./node_modules/console-browserify/index.js ***!
+  \**************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(global) {/*global window, global*/
+var util = __webpack_require__(/*! util */ "./node_modules/util/util.js")
+var assert = __webpack_require__(/*! assert */ "./node_modules/assert/assert.js")
+function now() { return new Date().getTime() }
+
+var slice = Array.prototype.slice
+var console
+var times = {}
+
+if (typeof global !== "undefined" && global.console) {
+    console = global.console
+} else if (typeof window !== "undefined" && window.console) {
+    console = window.console
+} else {
+    console = {}
+}
+
+var functions = [
+    [log, "log"],
+    [info, "info"],
+    [warn, "warn"],
+    [error, "error"],
+    [time, "time"],
+    [timeEnd, "timeEnd"],
+    [trace, "trace"],
+    [dir, "dir"],
+    [consoleAssert, "assert"]
+]
+
+for (var i = 0; i < functions.length; i++) {
+    var tuple = functions[i]
+    var f = tuple[0]
+    var name = tuple[1]
+
+    if (!console[name]) {
+        console[name] = f
+    }
+}
+
+module.exports = console
+
+function log() {}
+
+function info() {
+    console.log.apply(console, arguments)
+}
+
+function warn() {
+    console.log.apply(console, arguments)
+}
+
+function error() {
+    console.warn.apply(console, arguments)
+}
+
+function time(label) {
+    times[label] = now()
+}
+
+function timeEnd(label) {
+    var time = times[label]
+    if (!time) {
+        throw new Error("No such label: " + label)
+    }
+
+    delete times[label]
+    var duration = now() - time
+    console.log(label + ": " + duration + "ms")
+}
+
+function trace() {
+    var err = new Error()
+    err.name = "Trace"
+    err.message = util.format.apply(null, arguments)
+    console.error(err.stack)
+}
+
+function dir(object) {
+    console.log(util.inspect(object) + "\n")
+}
+
+function consoleAssert(expression) {
+    if (!expression) {
+        var arr = slice.call(arguments, 1)
+        assert.ok(false, util.format.apply(null, arr))
+    }
+}
+
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../webpack/buildin/global.js */ "./node_modules/webpack/buildin/global.js")))
 
 /***/ }),
 
@@ -23432,7 +24067,7 @@ process.umask = function() { return 0; };
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/**
+/* WEBPACK VAR INJECTION */(function(console) {/**
  * Copyright (c) 2013-present, Facebook, Inc.
  *
  * This source code is licensed under the MIT license found in the
@@ -23535,6 +24170,7 @@ checkPropTypes.resetWarningCache = function() {
 
 module.exports = checkPropTypes;
 
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../console-browserify/index.js */ "./node_modules/console-browserify/index.js")))
 
 /***/ }),
 
@@ -23570,7 +24206,7 @@ module.exports = ReactPropTypesSecret;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/** @license React v16.13.1
+/* WEBPACK VAR INJECTION */(function(console) {/** @license React v16.13.1
  * react-dom.development.js
  *
  * Copyright (c) Facebook, Inc. and its affiliates.
@@ -48583,6 +49219,7 @@ exports.version = ReactVersion;
   })();
 }
 
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../console-browserify/index.js */ "./node_modules/console-browserify/index.js")))
 
 /***/ }),
 
@@ -48594,7 +49231,7 @@ exports.version = ReactVersion;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
+/* WEBPACK VAR INJECTION */(function(console) {
 
 function checkDCE() {
   /* global __REACT_DEVTOOLS_GLOBAL_HOOK__ */
@@ -48628,6 +49265,7 @@ if (false) {} else {
   module.exports = __webpack_require__(/*! ./cjs/react-dom.development.js */ "./node_modules/react-dom/cjs/react-dom.development.js");
 }
 
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../console-browserify/index.js */ "./node_modules/console-browserify/index.js")))
 
 /***/ }),
 
@@ -48639,7 +49277,7 @@ if (false) {} else {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/** @license React v16.13.1
+/* WEBPACK VAR INJECTION */(function(console) {/** @license React v16.13.1
  * react.development.js
  *
  * Copyright (c) Facebook, Inc. and its affiliates.
@@ -50552,6 +51190,7 @@ exports.version = ReactVersion;
   })();
 }
 
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../console-browserify/index.js */ "./node_modules/console-browserify/index.js")))
 
 /***/ }),
 
@@ -50941,7 +51580,7 @@ exports.unstable_wrap = unstable_wrap;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/** @license React v0.19.1
+/* WEBPACK VAR INJECTION */(function(console) {/** @license React v0.19.1
  * scheduler.development.js
  *
  * Copyright (c) Facebook, Inc. and its affiliates.
@@ -51800,6 +52439,7 @@ exports.unstable_wrapCallback = unstable_wrapCallback;
   })();
 }
 
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../console-browserify/index.js */ "./node_modules/console-browserify/index.js")))
 
 /***/ }),
 
@@ -51834,6 +52474,771 @@ if (false) {} else {
   module.exports = __webpack_require__(/*! ./cjs/scheduler-tracing.development.js */ "./node_modules/scheduler/cjs/scheduler-tracing.development.js");
 }
 
+
+/***/ }),
+
+/***/ "./node_modules/util/node_modules/inherits/inherits_browser.js":
+/*!*********************************************************************!*\
+  !*** ./node_modules/util/node_modules/inherits/inherits_browser.js ***!
+  \*********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+if (typeof Object.create === 'function') {
+  // implementation from standard node.js 'util' module
+  module.exports = function inherits(ctor, superCtor) {
+    ctor.super_ = superCtor
+    ctor.prototype = Object.create(superCtor.prototype, {
+      constructor: {
+        value: ctor,
+        enumerable: false,
+        writable: true,
+        configurable: true
+      }
+    });
+  };
+} else {
+  // old school shim for old browsers
+  module.exports = function inherits(ctor, superCtor) {
+    ctor.super_ = superCtor
+    var TempCtor = function () {}
+    TempCtor.prototype = superCtor.prototype
+    ctor.prototype = new TempCtor()
+    ctor.prototype.constructor = ctor
+  }
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/util/support/isBufferBrowser.js":
+/*!******************************************************!*\
+  !*** ./node_modules/util/support/isBufferBrowser.js ***!
+  \******************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = function isBuffer(arg) {
+  return arg && typeof arg === 'object'
+    && typeof arg.copy === 'function'
+    && typeof arg.fill === 'function'
+    && typeof arg.readUInt8 === 'function';
+}
+
+/***/ }),
+
+/***/ "./node_modules/util/util.js":
+/*!***********************************!*\
+  !*** ./node_modules/util/util.js ***!
+  \***********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(process, console) {// Copyright Joyent, Inc. and other Node contributors.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a
+// copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to permit
+// persons to whom the Software is furnished to do so, subject to the
+// following conditions:
+//
+// The above copyright notice and this permission notice shall be included
+// in all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+// USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+var getOwnPropertyDescriptors = Object.getOwnPropertyDescriptors ||
+  function getOwnPropertyDescriptors(obj) {
+    var keys = Object.keys(obj);
+    var descriptors = {};
+    for (var i = 0; i < keys.length; i++) {
+      descriptors[keys[i]] = Object.getOwnPropertyDescriptor(obj, keys[i]);
+    }
+    return descriptors;
+  };
+
+var formatRegExp = /%[sdj%]/g;
+exports.format = function(f) {
+  if (!isString(f)) {
+    var objects = [];
+    for (var i = 0; i < arguments.length; i++) {
+      objects.push(inspect(arguments[i]));
+    }
+    return objects.join(' ');
+  }
+
+  var i = 1;
+  var args = arguments;
+  var len = args.length;
+  var str = String(f).replace(formatRegExp, function(x) {
+    if (x === '%%') return '%';
+    if (i >= len) return x;
+    switch (x) {
+      case '%s': return String(args[i++]);
+      case '%d': return Number(args[i++]);
+      case '%j':
+        try {
+          return JSON.stringify(args[i++]);
+        } catch (_) {
+          return '[Circular]';
+        }
+      default:
+        return x;
+    }
+  });
+  for (var x = args[i]; i < len; x = args[++i]) {
+    if (isNull(x) || !isObject(x)) {
+      str += ' ' + x;
+    } else {
+      str += ' ' + inspect(x);
+    }
+  }
+  return str;
+};
+
+
+// Mark that a method should not be used.
+// Returns a modified function which warns once by default.
+// If --no-deprecation is set, then it is a no-op.
+exports.deprecate = function(fn, msg) {
+  if (typeof process !== 'undefined' && process.noDeprecation === true) {
+    return fn;
+  }
+
+  // Allow for deprecating things in the process of starting up.
+  if (typeof process === 'undefined') {
+    return function() {
+      return exports.deprecate(fn, msg).apply(this, arguments);
+    };
+  }
+
+  var warned = false;
+  function deprecated() {
+    if (!warned) {
+      if (process.throwDeprecation) {
+        throw new Error(msg);
+      } else if (process.traceDeprecation) {
+        console.trace(msg);
+      } else {
+        console.error(msg);
+      }
+      warned = true;
+    }
+    return fn.apply(this, arguments);
+  }
+
+  return deprecated;
+};
+
+
+var debugs = {};
+var debugEnviron;
+exports.debuglog = function(set) {
+  if (isUndefined(debugEnviron))
+    debugEnviron = process.env.NODE_DEBUG || '';
+  set = set.toUpperCase();
+  if (!debugs[set]) {
+    if (new RegExp('\\b' + set + '\\b', 'i').test(debugEnviron)) {
+      var pid = process.pid;
+      debugs[set] = function() {
+        var msg = exports.format.apply(exports, arguments);
+        console.error('%s %d: %s', set, pid, msg);
+      };
+    } else {
+      debugs[set] = function() {};
+    }
+  }
+  return debugs[set];
+};
+
+
+/**
+ * Echos the value of a value. Trys to print the value out
+ * in the best way possible given the different types.
+ *
+ * @param {Object} obj The object to print out.
+ * @param {Object} opts Optional options object that alters the output.
+ */
+/* legacy: obj, showHidden, depth, colors*/
+function inspect(obj, opts) {
+  // default options
+  var ctx = {
+    seen: [],
+    stylize: stylizeNoColor
+  };
+  // legacy...
+  if (arguments.length >= 3) ctx.depth = arguments[2];
+  if (arguments.length >= 4) ctx.colors = arguments[3];
+  if (isBoolean(opts)) {
+    // legacy...
+    ctx.showHidden = opts;
+  } else if (opts) {
+    // got an "options" object
+    exports._extend(ctx, opts);
+  }
+  // set default options
+  if (isUndefined(ctx.showHidden)) ctx.showHidden = false;
+  if (isUndefined(ctx.depth)) ctx.depth = 2;
+  if (isUndefined(ctx.colors)) ctx.colors = false;
+  if (isUndefined(ctx.customInspect)) ctx.customInspect = true;
+  if (ctx.colors) ctx.stylize = stylizeWithColor;
+  return formatValue(ctx, obj, ctx.depth);
+}
+exports.inspect = inspect;
+
+
+// http://en.wikipedia.org/wiki/ANSI_escape_code#graphics
+inspect.colors = {
+  'bold' : [1, 22],
+  'italic' : [3, 23],
+  'underline' : [4, 24],
+  'inverse' : [7, 27],
+  'white' : [37, 39],
+  'grey' : [90, 39],
+  'black' : [30, 39],
+  'blue' : [34, 39],
+  'cyan' : [36, 39],
+  'green' : [32, 39],
+  'magenta' : [35, 39],
+  'red' : [31, 39],
+  'yellow' : [33, 39]
+};
+
+// Don't use 'blue' not visible on cmd.exe
+inspect.styles = {
+  'special': 'cyan',
+  'number': 'yellow',
+  'boolean': 'yellow',
+  'undefined': 'grey',
+  'null': 'bold',
+  'string': 'green',
+  'date': 'magenta',
+  // "name": intentionally not styling
+  'regexp': 'red'
+};
+
+
+function stylizeWithColor(str, styleType) {
+  var style = inspect.styles[styleType];
+
+  if (style) {
+    return '\u001b[' + inspect.colors[style][0] + 'm' + str +
+           '\u001b[' + inspect.colors[style][1] + 'm';
+  } else {
+    return str;
+  }
+}
+
+
+function stylizeNoColor(str, styleType) {
+  return str;
+}
+
+
+function arrayToHash(array) {
+  var hash = {};
+
+  array.forEach(function(val, idx) {
+    hash[val] = true;
+  });
+
+  return hash;
+}
+
+
+function formatValue(ctx, value, recurseTimes) {
+  // Provide a hook for user-specified inspect functions.
+  // Check that value is an object with an inspect function on it
+  if (ctx.customInspect &&
+      value &&
+      isFunction(value.inspect) &&
+      // Filter out the util module, it's inspect function is special
+      value.inspect !== exports.inspect &&
+      // Also filter out any prototype objects using the circular check.
+      !(value.constructor && value.constructor.prototype === value)) {
+    var ret = value.inspect(recurseTimes, ctx);
+    if (!isString(ret)) {
+      ret = formatValue(ctx, ret, recurseTimes);
+    }
+    return ret;
+  }
+
+  // Primitive types cannot have properties
+  var primitive = formatPrimitive(ctx, value);
+  if (primitive) {
+    return primitive;
+  }
+
+  // Look up the keys of the object.
+  var keys = Object.keys(value);
+  var visibleKeys = arrayToHash(keys);
+
+  if (ctx.showHidden) {
+    keys = Object.getOwnPropertyNames(value);
+  }
+
+  // IE doesn't make error fields non-enumerable
+  // http://msdn.microsoft.com/en-us/library/ie/dww52sbt(v=vs.94).aspx
+  if (isError(value)
+      && (keys.indexOf('message') >= 0 || keys.indexOf('description') >= 0)) {
+    return formatError(value);
+  }
+
+  // Some type of object without properties can be shortcutted.
+  if (keys.length === 0) {
+    if (isFunction(value)) {
+      var name = value.name ? ': ' + value.name : '';
+      return ctx.stylize('[Function' + name + ']', 'special');
+    }
+    if (isRegExp(value)) {
+      return ctx.stylize(RegExp.prototype.toString.call(value), 'regexp');
+    }
+    if (isDate(value)) {
+      return ctx.stylize(Date.prototype.toString.call(value), 'date');
+    }
+    if (isError(value)) {
+      return formatError(value);
+    }
+  }
+
+  var base = '', array = false, braces = ['{', '}'];
+
+  // Make Array say that they are Array
+  if (isArray(value)) {
+    array = true;
+    braces = ['[', ']'];
+  }
+
+  // Make functions say that they are functions
+  if (isFunction(value)) {
+    var n = value.name ? ': ' + value.name : '';
+    base = ' [Function' + n + ']';
+  }
+
+  // Make RegExps say that they are RegExps
+  if (isRegExp(value)) {
+    base = ' ' + RegExp.prototype.toString.call(value);
+  }
+
+  // Make dates with properties first say the date
+  if (isDate(value)) {
+    base = ' ' + Date.prototype.toUTCString.call(value);
+  }
+
+  // Make error with message first say the error
+  if (isError(value)) {
+    base = ' ' + formatError(value);
+  }
+
+  if (keys.length === 0 && (!array || value.length == 0)) {
+    return braces[0] + base + braces[1];
+  }
+
+  if (recurseTimes < 0) {
+    if (isRegExp(value)) {
+      return ctx.stylize(RegExp.prototype.toString.call(value), 'regexp');
+    } else {
+      return ctx.stylize('[Object]', 'special');
+    }
+  }
+
+  ctx.seen.push(value);
+
+  var output;
+  if (array) {
+    output = formatArray(ctx, value, recurseTimes, visibleKeys, keys);
+  } else {
+    output = keys.map(function(key) {
+      return formatProperty(ctx, value, recurseTimes, visibleKeys, key, array);
+    });
+  }
+
+  ctx.seen.pop();
+
+  return reduceToSingleString(output, base, braces);
+}
+
+
+function formatPrimitive(ctx, value) {
+  if (isUndefined(value))
+    return ctx.stylize('undefined', 'undefined');
+  if (isString(value)) {
+    var simple = '\'' + JSON.stringify(value).replace(/^"|"$/g, '')
+                                             .replace(/'/g, "\\'")
+                                             .replace(/\\"/g, '"') + '\'';
+    return ctx.stylize(simple, 'string');
+  }
+  if (isNumber(value))
+    return ctx.stylize('' + value, 'number');
+  if (isBoolean(value))
+    return ctx.stylize('' + value, 'boolean');
+  // For some reason typeof null is "object", so special case here.
+  if (isNull(value))
+    return ctx.stylize('null', 'null');
+}
+
+
+function formatError(value) {
+  return '[' + Error.prototype.toString.call(value) + ']';
+}
+
+
+function formatArray(ctx, value, recurseTimes, visibleKeys, keys) {
+  var output = [];
+  for (var i = 0, l = value.length; i < l; ++i) {
+    if (hasOwnProperty(value, String(i))) {
+      output.push(formatProperty(ctx, value, recurseTimes, visibleKeys,
+          String(i), true));
+    } else {
+      output.push('');
+    }
+  }
+  keys.forEach(function(key) {
+    if (!key.match(/^\d+$/)) {
+      output.push(formatProperty(ctx, value, recurseTimes, visibleKeys,
+          key, true));
+    }
+  });
+  return output;
+}
+
+
+function formatProperty(ctx, value, recurseTimes, visibleKeys, key, array) {
+  var name, str, desc;
+  desc = Object.getOwnPropertyDescriptor(value, key) || { value: value[key] };
+  if (desc.get) {
+    if (desc.set) {
+      str = ctx.stylize('[Getter/Setter]', 'special');
+    } else {
+      str = ctx.stylize('[Getter]', 'special');
+    }
+  } else {
+    if (desc.set) {
+      str = ctx.stylize('[Setter]', 'special');
+    }
+  }
+  if (!hasOwnProperty(visibleKeys, key)) {
+    name = '[' + key + ']';
+  }
+  if (!str) {
+    if (ctx.seen.indexOf(desc.value) < 0) {
+      if (isNull(recurseTimes)) {
+        str = formatValue(ctx, desc.value, null);
+      } else {
+        str = formatValue(ctx, desc.value, recurseTimes - 1);
+      }
+      if (str.indexOf('\n') > -1) {
+        if (array) {
+          str = str.split('\n').map(function(line) {
+            return '  ' + line;
+          }).join('\n').substr(2);
+        } else {
+          str = '\n' + str.split('\n').map(function(line) {
+            return '   ' + line;
+          }).join('\n');
+        }
+      }
+    } else {
+      str = ctx.stylize('[Circular]', 'special');
+    }
+  }
+  if (isUndefined(name)) {
+    if (array && key.match(/^\d+$/)) {
+      return str;
+    }
+    name = JSON.stringify('' + key);
+    if (name.match(/^"([a-zA-Z_][a-zA-Z_0-9]*)"$/)) {
+      name = name.substr(1, name.length - 2);
+      name = ctx.stylize(name, 'name');
+    } else {
+      name = name.replace(/'/g, "\\'")
+                 .replace(/\\"/g, '"')
+                 .replace(/(^"|"$)/g, "'");
+      name = ctx.stylize(name, 'string');
+    }
+  }
+
+  return name + ': ' + str;
+}
+
+
+function reduceToSingleString(output, base, braces) {
+  var numLinesEst = 0;
+  var length = output.reduce(function(prev, cur) {
+    numLinesEst++;
+    if (cur.indexOf('\n') >= 0) numLinesEst++;
+    return prev + cur.replace(/\u001b\[\d\d?m/g, '').length + 1;
+  }, 0);
+
+  if (length > 60) {
+    return braces[0] +
+           (base === '' ? '' : base + '\n ') +
+           ' ' +
+           output.join(',\n  ') +
+           ' ' +
+           braces[1];
+  }
+
+  return braces[0] + base + ' ' + output.join(', ') + ' ' + braces[1];
+}
+
+
+// NOTE: These type checking functions intentionally don't use `instanceof`
+// because it is fragile and can be easily faked with `Object.create()`.
+function isArray(ar) {
+  return Array.isArray(ar);
+}
+exports.isArray = isArray;
+
+function isBoolean(arg) {
+  return typeof arg === 'boolean';
+}
+exports.isBoolean = isBoolean;
+
+function isNull(arg) {
+  return arg === null;
+}
+exports.isNull = isNull;
+
+function isNullOrUndefined(arg) {
+  return arg == null;
+}
+exports.isNullOrUndefined = isNullOrUndefined;
+
+function isNumber(arg) {
+  return typeof arg === 'number';
+}
+exports.isNumber = isNumber;
+
+function isString(arg) {
+  return typeof arg === 'string';
+}
+exports.isString = isString;
+
+function isSymbol(arg) {
+  return typeof arg === 'symbol';
+}
+exports.isSymbol = isSymbol;
+
+function isUndefined(arg) {
+  return arg === void 0;
+}
+exports.isUndefined = isUndefined;
+
+function isRegExp(re) {
+  return isObject(re) && objectToString(re) === '[object RegExp]';
+}
+exports.isRegExp = isRegExp;
+
+function isObject(arg) {
+  return typeof arg === 'object' && arg !== null;
+}
+exports.isObject = isObject;
+
+function isDate(d) {
+  return isObject(d) && objectToString(d) === '[object Date]';
+}
+exports.isDate = isDate;
+
+function isError(e) {
+  return isObject(e) &&
+      (objectToString(e) === '[object Error]' || e instanceof Error);
+}
+exports.isError = isError;
+
+function isFunction(arg) {
+  return typeof arg === 'function';
+}
+exports.isFunction = isFunction;
+
+function isPrimitive(arg) {
+  return arg === null ||
+         typeof arg === 'boolean' ||
+         typeof arg === 'number' ||
+         typeof arg === 'string' ||
+         typeof arg === 'symbol' ||  // ES6 symbol
+         typeof arg === 'undefined';
+}
+exports.isPrimitive = isPrimitive;
+
+exports.isBuffer = __webpack_require__(/*! ./support/isBuffer */ "./node_modules/util/support/isBufferBrowser.js");
+
+function objectToString(o) {
+  return Object.prototype.toString.call(o);
+}
+
+
+function pad(n) {
+  return n < 10 ? '0' + n.toString(10) : n.toString(10);
+}
+
+
+var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep',
+              'Oct', 'Nov', 'Dec'];
+
+// 26 Feb 16:19:34
+function timestamp() {
+  var d = new Date();
+  var time = [pad(d.getHours()),
+              pad(d.getMinutes()),
+              pad(d.getSeconds())].join(':');
+  return [d.getDate(), months[d.getMonth()], time].join(' ');
+}
+
+
+// log is just a thin wrapper to console.log that prepends a timestamp
+exports.log = function() {
+  console.log('%s - %s', timestamp(), exports.format.apply(exports, arguments));
+};
+
+
+/**
+ * Inherit the prototype methods from one constructor into another.
+ *
+ * The Function.prototype.inherits from lang.js rewritten as a standalone
+ * function (not on Function.prototype). NOTE: If this file is to be loaded
+ * during bootstrapping this function needs to be rewritten using some native
+ * functions as prototype setup using normal JavaScript does not work as
+ * expected during bootstrapping (see mirror.js in r114903).
+ *
+ * @param {function} ctor Constructor function which needs to inherit the
+ *     prototype.
+ * @param {function} superCtor Constructor function to inherit prototype from.
+ */
+exports.inherits = __webpack_require__(/*! inherits */ "./node_modules/util/node_modules/inherits/inherits_browser.js");
+
+exports._extend = function(origin, add) {
+  // Don't do anything if add isn't an object
+  if (!add || !isObject(add)) return origin;
+
+  var keys = Object.keys(add);
+  var i = keys.length;
+  while (i--) {
+    origin[keys[i]] = add[keys[i]];
+  }
+  return origin;
+};
+
+function hasOwnProperty(obj, prop) {
+  return Object.prototype.hasOwnProperty.call(obj, prop);
+}
+
+var kCustomPromisifiedSymbol = typeof Symbol !== 'undefined' ? Symbol('util.promisify.custom') : undefined;
+
+exports.promisify = function promisify(original) {
+  if (typeof original !== 'function')
+    throw new TypeError('The "original" argument must be of type Function');
+
+  if (kCustomPromisifiedSymbol && original[kCustomPromisifiedSymbol]) {
+    var fn = original[kCustomPromisifiedSymbol];
+    if (typeof fn !== 'function') {
+      throw new TypeError('The "util.promisify.custom" argument must be of type Function');
+    }
+    Object.defineProperty(fn, kCustomPromisifiedSymbol, {
+      value: fn, enumerable: false, writable: false, configurable: true
+    });
+    return fn;
+  }
+
+  function fn() {
+    var promiseResolve, promiseReject;
+    var promise = new Promise(function (resolve, reject) {
+      promiseResolve = resolve;
+      promiseReject = reject;
+    });
+
+    var args = [];
+    for (var i = 0; i < arguments.length; i++) {
+      args.push(arguments[i]);
+    }
+    args.push(function (err, value) {
+      if (err) {
+        promiseReject(err);
+      } else {
+        promiseResolve(value);
+      }
+    });
+
+    try {
+      original.apply(this, args);
+    } catch (err) {
+      promiseReject(err);
+    }
+
+    return promise;
+  }
+
+  Object.setPrototypeOf(fn, Object.getPrototypeOf(original));
+
+  if (kCustomPromisifiedSymbol) Object.defineProperty(fn, kCustomPromisifiedSymbol, {
+    value: fn, enumerable: false, writable: false, configurable: true
+  });
+  return Object.defineProperties(
+    fn,
+    getOwnPropertyDescriptors(original)
+  );
+}
+
+exports.promisify.custom = kCustomPromisifiedSymbol
+
+function callbackifyOnRejected(reason, cb) {
+  // `!reason` guard inspired by bluebird (Ref: https://goo.gl/t5IS6M).
+  // Because `null` is a special error value in callbacks which means "no error
+  // occurred", we error-wrap so the callback consumer can distinguish between
+  // "the promise rejected with null" or "the promise fulfilled with undefined".
+  if (!reason) {
+    var newReason = new Error('Promise was rejected with a falsy value');
+    newReason.reason = reason;
+    reason = newReason;
+  }
+  return cb(reason);
+}
+
+function callbackify(original) {
+  if (typeof original !== 'function') {
+    throw new TypeError('The "original" argument must be of type Function');
+  }
+
+  // We DO NOT return the promise as it gives the user a false sense that
+  // the promise is actually somehow related to the callback's execution
+  // and that the callback throwing will reject the promise.
+  function callbackified() {
+    var args = [];
+    for (var i = 0; i < arguments.length; i++) {
+      args.push(arguments[i]);
+    }
+
+    var maybeCb = args.pop();
+    if (typeof maybeCb !== 'function') {
+      throw new TypeError('The last argument must be of type Function');
+    }
+    var self = this;
+    var cb = function() {
+      return maybeCb.apply(self, arguments);
+    };
+    // In true node style we process the callback on `nextTick` with all the
+    // implications (stack, `uncaughtException`, `async_hooks`)
+    original.apply(this, args)
+      .then(function(ret) { process.nextTick(cb, null, ret) },
+            function(rej) { process.nextTick(callbackifyOnRejected, rej, cb) });
+  }
+
+  Object.setPrototypeOf(callbackified, Object.getPrototypeOf(original));
+  Object.defineProperties(callbackified,
+                          getOwnPropertyDescriptors(original));
+  return callbackified;
+}
+exports.callbackify = callbackify;
+
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../process/browser.js */ "./node_modules/process/browser.js"), __webpack_require__(/*! ./../console-browserify/index.js */ "./node_modules/console-browserify/index.js")))
 
 /***/ }),
 
@@ -51987,7 +53392,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Content", function() { return Content; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _pokemon__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./pokemon */ "./src/components/pokemon.tsx");
+/* harmony import */ var _demos_pokemon__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./demos/pokemon */ "./src/components/demos/pokemon.tsx");
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -52141,14 +53546,15 @@ var demos = {
         title: 'Pokemon API Battle Game',
         subtitle: 'play a terminal Pokemon game that uses a Pokedex API',
         start: 'type \'help\' into the terminal to start',
-        component: _pokemon__WEBPACK_IMPORTED_MODULE_1__["default"],
+        component: _demos_pokemon__WEBPACK_IMPORTED_MODULE_1__["default"],
     },
-    userData: {
-        title: 'You on the Web',
-        subtitle: 'what web browsers see when you use them',
-        start: 'We\'ve already grabbed some data from your browser, take a look.',
-        url: '',
-    },
+    // userData: {
+    //   title: 'You on the Web',
+    //   subtitle: 'what web browsers see when you use them',
+    //   start: 'We\'ve already grabbed some data from your browser, take a look.',
+    //   url: '',
+    //   // system details, geolocation, wifi? signed-in accounts? fb data, ad data?
+    // },
     satellites: {
         title: 'What\'s Above You',
         subtitle: 'watch an animation of the satellites in your current sky',
@@ -52335,26 +53741,26 @@ var Header = /** @class */ (function (_super) {
 
 /***/ }),
 
-/***/ "./src/components/pokemon.tsx":
-/*!************************************!*\
-  !*** ./src/components/pokemon.tsx ***!
-  \************************************/
+/***/ "./src/components/demos/pokemon.tsx":
+/*!******************************************!*\
+  !*** ./src/components/demos/pokemon.tsx ***!
+  \******************************************/
 /*! exports provided: Pokemon, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Pokemon", function() { return Pokemon; });
+/* WEBPACK VAR INJECTION */(function(console) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Pokemon", function() { return Pokemon; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_bash_typescript__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-bash-typescript */ "../react-bash-typescript/dist/index.js");
 /* harmony import */ var react_bash_typescript__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_bash_typescript__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
 /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils */ "./src/utils.ts");
-/* harmony import */ var _pokemon_data__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./pokemon/data */ "./src/components/pokemon/data.ts");
-/* harmony import */ var _pokemon_api__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./pokemon/api */ "./src/components/pokemon/api.ts");
-/* harmony import */ var _pokemon_functions__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./pokemon/functions */ "./src/components/pokemon/functions.ts");
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../utils */ "./src/utils.ts");
+/* harmony import */ var _pokemon_data__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./pokemon/data */ "./src/components/demos/pokemon/data.ts");
+/* harmony import */ var _pokemon_api__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./pokemon/api */ "./src/components/demos/pokemon/api.ts");
+/* harmony import */ var _pokemon_functions__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./pokemon/functions */ "./src/components/demos/pokemon/functions.ts");
 /*
   Uses an updated Terminal module (react-bash-typescript)[https://github.com/foureyedraven/react-bash-typescript]
   to interact with PokeAPI (https://pokeapi.co/) and deliver
@@ -52384,35 +53790,6 @@ var __assign = (undefined && undefined.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-/*
-  Gives sense of accomplishment (addictive).
-  (Report overall stats each game, desire to round up numbers
-  (use larger increments, challenge people to reach a level)).
-  Should give pointers on what to do at the beginning to accomplish some goal.
-  Gives sense of adventure. (Maybe add regions you can go to. Or restrict V1 to certain region)
-  The more you play, the higher your XP, and higher the range of pokemon you can choose.
-  Or, you capture who you defeat. (desire to save progress, or accomplish more, ability to see accomplishments (battles, captured pokemon))
-  randomize commentary, and get more complex and comedic/weirdly personal as things go on, a la warcraft npcs
-  save progress in cache? initial state will pull from cache
-
-  what's to stop ppl just using the best attack each time?
-  can use the pp. or, inverse of their power
-  but then we have to track the moves used. Which may be ok...
-  Or, make the power of their move porportional to their hp: weaker they are, less powerful move they can use.
-  User starts with a single pokemon - pikachu?
-*/
-/*
-  TODO
-  add loading animation command
-  test serving content split at \n in terminal
-  update terminal README
-  add win magikarp animation (maybe do reverse magikarp on lose)
-  add message if loading fails? test offline, add msg to Terminal
-  consider limiting opponent pokemon to a ratio of user's available pokemon (still could have charizard etc...)
-  add github inset text for demo
-  consider adding an ascii art for pokemon per move played (get from fiikus? via crawling?)
-  add increase in base HP depending on user XP level
-*/
 
 
 
@@ -52426,9 +53803,14 @@ var Pokemon = /** @class */ (function (_super) {
         var _this = _super.call(this, props) || this;
         _this.returnPokemon = function (monster) {
             Object(_pokemon_api__WEBPACK_IMPORTED_MODULE_5__["getPokemon"])(monster).then(function (res) {
+                // A chosen Pokemon's HP and attack stat goes up with user XP
+                var hp = res.stats.hp + Math.floor(_this.state.report.userXP / 15);
+                var attack = res.stats.hp + Math.floor(_this.state.report.userXP / 20);
+                var pokemon = __assign(__assign({}, res), { stats: __assign(__assign({}, res.stats), { hp: hp,
+                        attack: attack }) });
                 _this.setState({
-                    message: Object(_pokemon_functions__WEBPACK_IMPORTED_MODULE_6__["formatPokemonResponse"])(res)['pokemon'],
-                    players: __assign(__assign({}, _this.state.players), { user: res })
+                    message: Object(_pokemon_functions__WEBPACK_IMPORTED_MODULE_6__["formatPokemonResponse"])(pokemon)['pokemon'],
+                    players: __assign(__assign({}, _this.state.players), { user: pokemon })
                 });
             }).catch(function (err) { return _this.setState({
                 message: Object(_pokemon_functions__WEBPACK_IMPORTED_MODULE_6__["returnError"])(monster, 'pokemon'),
@@ -52436,8 +53818,12 @@ var Pokemon = /** @class */ (function (_super) {
         };
         _this.returnOpponent = function () {
             Object(_pokemon_api__WEBPACK_IMPORTED_MODULE_5__["getPokemon"])(Object(_utils__WEBPACK_IMPORTED_MODULE_3__["getRandomInteger"])(1, 129)).then(function (res) {
+                // Show ASCII art of opponent
+                var id = res.id + "";
+                Object(_pokemon_api__WEBPACK_IMPORTED_MODULE_5__["getAsciiArt"])(id.padStart(3, '0')).then(function (res) { return _this.setState({ message: res.data }); })
+                    .catch(function (err) { return console.log(err); });
                 _this.setState({
-                    message: Object(_pokemon_functions__WEBPACK_IMPORTED_MODULE_6__["formatPokemonResponse"])(res)['opponent'],
+                    message: Object(_pokemon_functions__WEBPACK_IMPORTED_MODULE_6__["formatPokemonResponse"])(res)['opponent'].concat(),
                     players: __assign(__assign({}, _this.state.players), { opponent: res }),
                 });
             }).catch(function (err) { return _this.setState({
@@ -52447,8 +53833,9 @@ var Pokemon = /** @class */ (function (_super) {
         _this.returnMove = function (move) {
             var attackerKey = _this.state.currPlayer;
             var defenderKey = _this.state.currPlayer === "user" ? "opponent" : "user";
-            // The more you play and gain XP, the more effect your attacks are,
-            // no matter what pokemon you use (but pokemon matters, too)
+            // The more you play and gain XP, the more effect your, and your opponent's,
+            // attacks are, no matter what pokemon you use (but pokemon matters, too).
+            // In original game, opponents get more difficult as you progress.
             var level = Math.floor(_this.state.report.userXP / 10);
             // Get move data and display its message
             Object(_pokemon_api__WEBPACK_IMPORTED_MODULE_5__["getMove"])(move).then(function (res) {
@@ -52463,6 +53850,7 @@ var Pokemon = /** @class */ (function (_super) {
                 });
                 _this.setState({
                     currPlayer: _this.state.currPlayer === "user" ? "opponent" : "user",
+                    // Run . . . animation in terminal
                     message: Object(_pokemon_functions__WEBPACK_IMPORTED_MODULE_6__["formatMoveResponse"])({
                         move: res,
                         damage: damage,
@@ -52534,6 +53922,7 @@ var Pokemon = /** @class */ (function (_super) {
                 wins: [],
                 losses: [],
             },
+            loading: false
         };
         return _this;
     }
@@ -52591,7 +53980,12 @@ var Pokemon = /** @class */ (function (_super) {
             }
             else if (cmd === 'use') {
                 if (arg) {
-                    this.returnMove(arg);
+                    if (this.state.players.user.moves.includes(arg)) {
+                        this.returnMove(arg);
+                    }
+                    else {
+                        this.setState({ message: 'Your Pokemon doesn\'t have that move!' });
+                    }
                 }
                 else {
                     this.setState({
@@ -52611,8 +54005,12 @@ var Pokemon = /** @class */ (function (_super) {
                 this.endBattle(true);
             }
             else if (this.state.currPlayer === "opponent") {
-                var randomMove = this.state.players.opponent.moves[Object(_utils__WEBPACK_IMPORTED_MODULE_3__["getRandomInteger"])(0, 9)];
-                this.returnMove(randomMove);
+                this.setState({ loading: true });
+                setTimeout(function () {
+                    var randomMove = _this.state.players.opponent.moves[Object(_utils__WEBPACK_IMPORTED_MODULE_3__["getRandomInteger"])(0, 9)];
+                    _this.returnMove(randomMove);
+                    _this.setState({ loading: false });
+                }, 1000);
             }
         }
         // Something Special
@@ -52625,21 +54023,22 @@ var Pokemon = /** @class */ (function (_super) {
     Pokemon.prototype.render = function () {
         var _this = this;
         return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", null,
-            react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_bash_typescript__WEBPACK_IMPORTED_MODULE_1___default.a, { extensions: _pokemon_data__WEBPACK_IMPORTED_MODULE_4__["extensions"], structure: _pokemon_data__WEBPACK_IMPORTED_MODULE_4__["structure"], history: _pokemon_data__WEBPACK_IMPORTED_MODULE_4__["history"], prefix: "player1@pokemaster", message: this.state.message, getTerminalInput: function (input) { return _this.setState({ input: input }); }, resetMessage: function () { return _this.setState({ message: '' }); }, currentPokemon: this.state.players.user, currentOpponent: this.state.players.opponent })));
+            react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_bash_typescript__WEBPACK_IMPORTED_MODULE_1___default.a, { extensions: _pokemon_data__WEBPACK_IMPORTED_MODULE_4__["extensions"], structure: _pokemon_data__WEBPACK_IMPORTED_MODULE_4__["structure"], history: _pokemon_data__WEBPACK_IMPORTED_MODULE_4__["history"], prefix: "player1@pokemaster", message: this.state.message, loading: this.state.loading, getTerminalInput: function (input) { return _this.setState({ input: input }); }, resetMessage: function () { return _this.setState({ message: '' }); }, currentPokemon: this.state.players.user, currentOpponent: this.state.players.opponent })));
     };
     return Pokemon;
 }(react__WEBPACK_IMPORTED_MODULE_0__["Component"]));
 
 /* harmony default export */ __webpack_exports__["default"] = (Pokemon);
 
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../../node_modules/console-browserify/index.js */ "./node_modules/console-browserify/index.js")))
 
 /***/ }),
 
-/***/ "./src/components/pokemon/api.ts":
-/*!***************************************!*\
-  !*** ./src/components/pokemon/api.ts ***!
-  \***************************************/
-/*! exports provided: getPokemon, getAbility, getMove */
+/***/ "./src/components/demos/pokemon/api.ts":
+/*!*********************************************!*\
+  !*** ./src/components/demos/pokemon/api.ts ***!
+  \*********************************************/
+/*! exports provided: getPokemon, getAbility, getMove, getAsciiArt */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -52647,9 +54046,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getPokemon", function() { return getPokemon; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getAbility", function() { return getAbility; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getMove", function() { return getMove; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getAsciiArt", function() { return getAsciiArt; });
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _functions__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./functions */ "./src/components/pokemon/functions.ts");
+/* harmony import */ var _functions__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./functions */ "./src/components/demos/pokemon/functions.ts");
 var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -52715,14 +54115,22 @@ var getMove = function (move) { return __awaiter(void 0, void 0, void 0, functio
         }
     });
 }); };
+var getAsciiArt = function (pokemon) { return __awaiter(void 0, void 0, void 0, function () {
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, axios__WEBPACK_IMPORTED_MODULE_0___default.a.get("https://www.fiikus.net/asciiart/pokemon/" + pokemon + ".txt")];
+            case 1: return [2 /*return*/, _a.sent()];
+        }
+    });
+}); };
 
 
 /***/ }),
 
-/***/ "./src/components/pokemon/data.ts":
-/*!****************************************!*\
-  !*** ./src/components/pokemon/data.ts ***!
-  \****************************************/
+/***/ "./src/components/demos/pokemon/data.ts":
+/*!**********************************************!*\
+  !*** ./src/components/demos/pokemon/data.ts ***!
+  \**********************************************/
 /*! exports provided: PIKACHU_V2, MAGIKARP_V1, SUCCESS, pokemonRules, extensions, history, structure */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -52747,7 +54155,7 @@ var SUCCESS = MAGIKARP_V1.concat("\n\n            #########                    #
 /*  - - - - - - - - - - - - -  */
 /*  Pokemon Gameplay Text      */
 /*  - - - - - - - - - - - - -  */
-var pokemonRules = "\n##### COMMANDS ####\n\nplay            Shows you the rules & commands\nreport          Shows your Pokemon, experience, & history\nplay {name}     Chooses Pokemon and shows its stats\nbattle          Begins battle with chosen Pokemon\nuse {move}      Uses a move seen in play {name}\nforfeit         Ends battle with no penalties\nhelp            See other commands available\n\n\n###################\n### HOW TO PLAY ###\n###################\n\n1.  Pick a Pokemon to play by typing 'play {name}'. Your\n    first Pokemon is Pikachu, so, play pikachu\n\n2.  When you're ready, type: 'battle'\n    A random Pokemon will appear to fight!\n\n3.  Use your Pokemon's moves ['use {move}'] against your\n    opponent until you win or lose.\n\n4.  Sick of fighting? Type 'forfeit' to end the\n    battle with no penalties.\n\nTIPS: \u2022 Your battle move effect and Pokemon HP goes up\n        proportional to your Player XP!\n      \u2022 Something special happens when you reach 500 XP!\n\n##### FORGOT? #####\nTYPE 'play' TO SEE THESE RULES.\n\n";
+var pokemonRules = "\n##### COMMANDS ####\n\nplay            Shows you the rules & commands\nreport          Shows your Pokemon, experience, & history\nplay {name}     Chooses Pokemon and shows its stats\nbattle          Begins battle with random Pokemon\nuse {move}      Uses a move seen in play {name}\nforfeit         Ends battle with no penalties\nhelp            See other commands available\n\n\n###################\n### HOW TO PLAY ###\n###################\n\n1.  Type 'play {name}' to play a Pokemon.\n    Your first Pokemon is Pikachu, so, play pikachu\n\n2.  When you're ready, type 'battle'\n    A random Pokemon will appear to fight!\n\n3.  Use your Pokemon's moves ['use {move}'] against\n    your opponent until you win or lose.\n\n4.  Sick of fighting? Type 'forfeit' to end the\n    battle with no penalties.\n\nTIPS: \u2022 Your battle move effect and Pokemon HP go up\n        with your Player XP!\n      \u2022 Something special happens when you reach 500 XP!\n\n##### FORGOT? #####\nTYPE 'play' TO SEE THESE RULES.\n\n";
 var credits = "\nAPI data provided by https://pokeapi.co/\nMagikarp ASCII art created by fiikus http://www.fiikus.net/asciiart/pokemon/129.txt\nDamage formula from the games, via https://bulbapedia.bulbagarden.net/wiki/Damage\n";
 /*  - - - - - - - - - - - - -  */
 /*  Default Terminal Data      */
@@ -52766,10 +54174,6 @@ var extensions = {
     forfeit: baseCommand,
     report: baseCommand,
 };
-// ['play', 'use', 'battle', 'forfeit']
-//   .reduce((acc, curr) =>
-//     acc[curr] = this.baseCommand,
-//   {})
 var newDir = {
     README: { content: pokemonRules },
     newFile: { content: "I'm Empty" }
@@ -52781,14 +54185,26 @@ var history = [
     { value: '>> TYPE play TO START' },
 ];
 var structure = { newDir: newDir };
+// IDEA BANK
+/*
+  TODO
+  test serving content split at \n in terminal
+  update terminal README
+  add message if loading fails? test offline, add msg to Terminal
+  add github inset text for demo
+  add autocomplete to moves and pokemon
+  add randomized commentary (increasingly personal or odd)
+  let user save progress in cache += save leaderboard on some server
+  add regions and weather
+*/
 
 
 /***/ }),
 
-/***/ "./src/components/pokemon/functions.ts":
-/*!*********************************************!*\
-  !*** ./src/components/pokemon/functions.ts ***!
-  \*********************************************/
+/***/ "./src/components/demos/pokemon/functions.ts":
+/*!***************************************************!*\
+  !*** ./src/components/demos/pokemon/functions.ts ***!
+  \***************************************************/
 /*! exports provided: returnError, returnUnavailable, returnReport, formatPokemonResponse, formatMoveResponse, formatGameResponse, transformPokemonData, transformMoveData, calculateDamage */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -52803,7 +54219,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "transformPokemonData", function() { return transformPokemonData; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "transformMoveData", function() { return transformMoveData; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "calculateDamage", function() { return calculateDamage; });
-/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../utils */ "./src/utils.ts");
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../utils */ "./src/utils.ts");
 // Functions for gameplay
 
 /*  - - - - - - - - - - - - -  */
@@ -52813,11 +54229,11 @@ var returnError = function (val, type) {
     return val + " is not a real " + type + "! Check your spelling?";
 };
 var returnUnavailable = function (data) {
-    return "\n  Sorry, that Pokemon is not available to you. Try one of these:\n  " + data.join('\n') + "\n        ";
+    return "\nSorry, that Pokemon is not available to you. Try one of these:\n\n  " + data.join('\n') + "\n        ";
 };
 var returnReport = function (data) {
     return "\n### PLAYER 1 ######\n\nPLAYER XP: " + data.userXP + "\n\nAVAILABLE POKEMON:\n\n" + ('  ' + data.availablePokemon.map(function (pokemon, i, arr) {
-        return pokemon + (!(i % 2) ? i != arr.length - 1 ? '    ' : '\n' : '\n  ');
+        return pokemon + (!(i % 2) ? i != arr.length - 1 ? ' \t' : '\n' : '\n  ');
     }).join('')) + "\nWINS:\n\n  " + (data.wins.length ? data.wins.map(function (win) { return win.user + '  VS  ' + win.opponent; }).join('\n  ') : 'NONE') + "\n\nLOSSES:\n\n  " + (data.losses.length ? data.losses.map(function (loss) { return loss.user + '  VS  ' + loss.opponent; }).join('\n  ') : 'NONE') + "\n  ";
 };
 var formatPokemonResponse = function (data) {

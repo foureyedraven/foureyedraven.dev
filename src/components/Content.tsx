@@ -1,6 +1,6 @@
 import * as React from "react"
 import { TabState } from "./constants"
-import Pokemon from "./pokemon"
+import Pokemon from "./demos/pokemon"
 
 const styles = {
   main: {
@@ -162,13 +162,13 @@ const demos = {
     // maybe saving high scores? which db? mongodb?
     // websocket to play against another player? (sign in code?)
   },
-  userData: {
-    title: 'You on the Web',
-    subtitle: 'what web browsers see when you use them',
-    start: 'We\'ve already grabbed some data from your browser, take a look.',
-    url: '',
-    // system details, geolocation, wifi? signed-in accounts? fb data, ad data?
-  },
+  // userData: {
+  //   title: 'You on the Web',
+  //   subtitle: 'what web browsers see when you use them',
+  //   start: 'We\'ve already grabbed some data from your browser, take a look.',
+  //   url: '',
+  //   // system details, geolocation, wifi? signed-in accounts? fb data, ad data?
+  // },
   satellites: {
     title: 'What\'s Above You',
     subtitle: 'watch an animation of the satellites in your current sky',

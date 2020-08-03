@@ -15,3 +15,7 @@ export const getMove = async (move:string | number) => {
   return await axios.get(`https://pokeapi.co/api/v2/move/${move}`)
     .then(res => transformMoveData(res.data))
 }
+
+export const getAsciiArt = async (pokemon:number | string) => {
+  return await axios.get(`https://www.fiikus.net/asciiart/pokemon/${pokemon}.txt`)
+}
