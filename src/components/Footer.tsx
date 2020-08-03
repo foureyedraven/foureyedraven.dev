@@ -37,7 +37,7 @@ export class Footer extends React.Component<{}, any> {
       <div style={footer}>
         <div>
           {Object.keys(links).map(link => (
-            <a key={link} style={text} target="_blank">{link}</a>
+            <a key={link} href={link} style={text} target="_blank">{link}</a>
           ))}
         </div>
       </div>
