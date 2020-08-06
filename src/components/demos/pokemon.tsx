@@ -4,14 +4,6 @@
   an interactive Pokemon battle game in the client.
 */
 
-// TODO
-// make points in battle clearer
-// make first opponent always easy (diglett?)
-// make the moves easier to use (autocomplete?)
-// make instructions from step to step clearer
-// only show report on a win?
-
-
 import * as React from 'react'
 import Terminal from 'react-bash-typescript'
 import { isEmpty } from 'lodash'
@@ -25,7 +17,8 @@ import {
   formatPokemonResponse,
   formatMoveResponse,
   formatGameResponse,
-  calculateDamage
+  calculateDamage,
+  score
 } from './pokemon/functions'
 
 interface Props {}
@@ -80,8 +73,6 @@ export class Pokemon extends React.Component<Props, State> {
       report: {
         userXP: 150,
         availablePokemon: ['Pikachu'],
-        // Limit the available pokemon for a new player,
-        // add defeated pokemon. "Sorry, you don't have access to that Pokemon!"
         wins: [],
         losses: [],
       },
@@ -98,12 +89,13 @@ export class Pokemon extends React.Component<Props, State> {
 
       if (cmd === 'play') {
         if (arg === 'random') {
-          // This is a hidden cheat
+          // This is a hidden cheat for now
           this.returnPokemon(getRandomInteger(0, 129))
         } else if (arg) {
           if (!this.state.report.availablePokemon.includes(toCapitalCase(arg))) {
             this.setState({ message: returnUnavailable(this.state.report.availablePokemon)})
-            return
+          } else if (!isEmpty(this.state.players.opponent)) {
+            this.setState({ message: '\nYou can\'t select a new player during a battle!\n\n'})
           } else {
             this.returnPokemon(arg)
           }
@@ -113,17 +105,16 @@ export class Pokemon extends React.Component<Props, State> {
       } else if (cmd === 'report') {
         this.setState({ message: returnReport(this.state.report) })
       } else if (cmd === 'battle') {
-        // maybe have opponent return most similar move,
-        // or do that half the time to appear smart
+        // First opponent should be easy
         if (!isEmpty(this.state.players.user)) {
           this.returnOpponent()
         } else if (!isEmpty(this.state.players.opponent)) {
           this.setState({
-            message: 'You\'re already in a battle! You can\'t get a new opponent.\nYou can \'forfeit\' to battle someone new.'
+            message: '\nYou\'re already in a battle! You can\'t get a new opponent.\nYou can \'forfeit\' to battle someone new.\n'
           })
         } else {
           this.setState({
-            message: 'You need to pick a Pokemon before battling'
+            message: `\nYou need to pick a Pokemon before battling. Try: play pikachu\n\n`
           })
         }
       } else if (cmd === 'forfeit') {
@@ -137,14 +128,24 @@ export class Pokemon extends React.Component<Props, State> {
           })
       } else if (cmd === 'use') {
         if (arg) {
-          if (this.state.players.user.moves.includes(arg)) {
-            this.returnMove(arg)
+          if (!isEmpty(this.state.players.user)) {
+            if (!isEmpty(this.state.players.opponent)) {
+              if (this.state.players.user.moves.includes(arg)) {
+                this.returnMove(arg)
+              } else {
+                this.setState({ message: '\nYour Pokemon doesn\'t have that move!\n\n'})
+              }
+            } else {
+              this.setState({ message: `\nYou need to battle before using a move.\n\n`})
+            }
           } else {
-            this.setState({ message: 'Your Pokemon doesn\'t have that move!'})
+            this.setState({
+              message: returnError(arg, 'move'),
+            })
           }
         } else {
           this.setState({
-            message: 'Use what?'
+            message: '\nUse what?\n\n'
           })
         }
       }
@@ -159,20 +160,23 @@ export class Pokemon extends React.Component<Props, State> {
       } else if (this.state.players.opponent.stats.hp <= 0) {
         this.endBattle(true)
       } else if (this.state.currPlayer === "opponent") {
+        // Runs . . . animation in terminal
         this.setState({ loading: true})
         setTimeout(() => {
           const randomMove = this.state.players.opponent.moves[getRandomInteger(0, 9)]
           this.returnMove(randomMove)
           this.setState({ loading: false})
-        }, 1000)
+        }, 2000)
+      } else if (this.state.currPlayer === "user") {
+        this.setState({ message: '\nUse another move!\n\n'})
       }
     }
 
     // Something Special
-    if (prevState.report.userXP !== this.state.report.userXP && this.state.report.userXP >= 500) {
+    if (prevState.report.userXP !== this.state.report.userXP && this.state.report.userXP >= 500 && prevState.report.userXP < 500) {
       SUCCESS.split('\n').forEach(line => setTimeout(() => {
         this.setState({message: line})
-      }, 500))
+      }, 1000))
     }
   }
 
@@ -202,7 +206,8 @@ export class Pokemon extends React.Component<Props, State> {
   }
 
   returnOpponent = () => {
-    getPokemon(getRandomInteger(1, 129)).then(res => {
+    const opponentId = this.state.report.wins.length ? getRandomInteger(1, 129) : 50
+    getPokemon(opponentId).then(res => {
       // Show ASCII art of opponent
       const id = res.id + ""
       getAsciiArt(id.padStart(3, '0')).then(res => this.setState({ message: res.data }) )
@@ -226,7 +231,7 @@ export class Pokemon extends React.Component<Props, State> {
     // The more you play and gain XP, the more effect your, and your opponent's,
     // attacks are, no matter what pokemon you use (but pokemon matters, too).
     // In original game, opponents get more difficult as you progress.
-    const level = Math.floor(this.state.report.userXP/10)
+    const level = Math.floor(this.state.report.userXP/15)
     // Get move data and display its message
     getMove(move).then((res) => {
       if (!res) { throw new Error }
@@ -238,13 +243,12 @@ export class Pokemon extends React.Component<Props, State> {
       })
       this.setState({
         currPlayer: this.state.currPlayer === "user" ? "opponent" : "user",
-        // Run . . . animation in terminal
         message: formatMoveResponse({
           move: res,
           damage,
           attacker: this.state.players[attackerKey],
           defender: this.state.players[defenderKey]
-        })['attack'],
+        })['attack'] + score(this.state.players),
       })
     }).catch(err => this.setState({
       message: returnError(move, 'move'),
@@ -275,7 +279,9 @@ export class Pokemon extends React.Component<Props, State> {
     }
     setTimeout(() => {
       this.setState({
-        message: formatGameResponse({ opponent, user })[win ? "win" : "loss"].concat(returnReport(report)),
+        message: formatGameResponse({ opponent, user })[win ? "win" : "loss"]
+          .concat(returnReport(report)
+          .concat(`\nPlay an AVAILABLE POKEMON for another battle!\n\n`)),
         report,
         players: {
           user: undefined,
@@ -283,7 +289,7 @@ export class Pokemon extends React.Component<Props, State> {
         },
         currPlayer: 'user'
       })
-    }, 1000)
+    }, 2000)
   }
 
   applyDamage = ({ move, level, attackerKey, defenderKey }) => {
