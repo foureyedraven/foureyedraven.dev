@@ -104,7 +104,6 @@ const Profile = () => {
           <li>BLE device and message management,</li>
           <li>scripting and library implementation with Python 3, notably openCV.</li>
         </ul>
-        <br/>
         <div style={{ width: 'fit-content' }}>
           <a style={styles.a} target="_blank" href="https://docs.google.com/document/d/1SNIqC6LjeXw5NvsxRQd6JKZxAlE6pKgrGa_xc7sfs1I/?usp=sharing">Check out my resume &#x21E8;</a>
         </div>
