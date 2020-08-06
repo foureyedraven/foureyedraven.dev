@@ -50200,12 +50200,6 @@ var __assign = (undefined && undefined.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-// TODO
-// make points in battle clearer
-// make first opponent always easy (diglett?)
-// make the moves easier to use (autocomplete?)
-// make instructions from step to step clearer
-// only show report on a win?
 
 
 
@@ -50233,7 +50227,8 @@ var Pokemon = /** @class */ (function (_super) {
             }); });
         };
         _this.returnOpponent = function () {
-            Object(_pokemon_api__WEBPACK_IMPORTED_MODULE_5__["getPokemon"])(Object(_utils__WEBPACK_IMPORTED_MODULE_3__["getRandomInteger"])(1, 129)).then(function (res) {
+            var opponentId = _this.state.report.wins.length ? Object(_utils__WEBPACK_IMPORTED_MODULE_3__["getRandomInteger"])(1, 129) : 50;
+            Object(_pokemon_api__WEBPACK_IMPORTED_MODULE_5__["getPokemon"])(opponentId).then(function (res) {
                 // Show ASCII art of opponent
                 var id = res.id + "";
                 Object(_pokemon_api__WEBPACK_IMPORTED_MODULE_5__["getAsciiArt"])(id.padStart(3, '0')).then(function (res) { return _this.setState({ message: res.data }); })
@@ -50252,7 +50247,7 @@ var Pokemon = /** @class */ (function (_super) {
             // The more you play and gain XP, the more effect your, and your opponent's,
             // attacks are, no matter what pokemon you use (but pokemon matters, too).
             // In original game, opponents get more difficult as you progress.
-            var level = Math.floor(_this.state.report.userXP / 10);
+            var level = Math.floor(_this.state.report.userXP / 15);
             // Get move data and display its message
             Object(_pokemon_api__WEBPACK_IMPORTED_MODULE_5__["getMove"])(move).then(function (res) {
                 if (!res) {
@@ -50266,13 +50261,12 @@ var Pokemon = /** @class */ (function (_super) {
                 });
                 _this.setState({
                     currPlayer: _this.state.currPlayer === "user" ? "opponent" : "user",
-                    // Run . . . animation in terminal
                     message: Object(_pokemon_functions__WEBPACK_IMPORTED_MODULE_6__["formatMoveResponse"])({
                         move: res,
                         damage: damage,
                         attacker: _this.state.players[attackerKey],
                         defender: _this.state.players[defenderKey]
-                    })['attack'],
+                    })['attack'] + Object(_pokemon_functions__WEBPACK_IMPORTED_MODULE_6__["score"])(_this.state.players),
                 });
             }).catch(function (err) { return _this.setState({
                 message: Object(_pokemon_functions__WEBPACK_IMPORTED_MODULE_6__["returnError"])(move, 'move'),
@@ -50295,7 +50289,9 @@ var Pokemon = /** @class */ (function (_super) {
             }
             setTimeout(function () {
                 _this.setState({
-                    message: Object(_pokemon_functions__WEBPACK_IMPORTED_MODULE_6__["formatGameResponse"])({ opponent: opponent, user: user })[win ? "win" : "loss"].concat(Object(_pokemon_functions__WEBPACK_IMPORTED_MODULE_6__["returnReport"])(report)),
+                    message: Object(_pokemon_functions__WEBPACK_IMPORTED_MODULE_6__["formatGameResponse"])({ opponent: opponent, user: user })[win ? "win" : "loss"]
+                        .concat(Object(_pokemon_functions__WEBPACK_IMPORTED_MODULE_6__["returnReport"])(report)
+                        .concat("\nPlay an AVAILABLE POKEMON for another battle!\n\n")),
                     report: report,
                     players: {
                         user: undefined,
@@ -50303,7 +50299,7 @@ var Pokemon = /** @class */ (function (_super) {
                     },
                     currPlayer: 'user'
                 });
-            }, 1000);
+            }, 2000);
         };
         _this.applyDamage = function (_a) {
             var _b;
@@ -50333,8 +50329,6 @@ var Pokemon = /** @class */ (function (_super) {
             report: {
                 userXP: 150,
                 availablePokemon: ['Pikachu'],
-                // Limit the available pokemon for a new player,
-                // add defeated pokemon. "Sorry, you don't have access to that Pokemon!"
                 wins: [],
                 losses: [],
             },
@@ -50351,13 +50345,15 @@ var Pokemon = /** @class */ (function (_super) {
             var arg = inputArr[1];
             if (cmd === 'play') {
                 if (arg === 'random') {
-                    // This is a hidden cheat
+                    // This is a hidden cheat for now
                     this.returnPokemon(Object(_utils__WEBPACK_IMPORTED_MODULE_3__["getRandomInteger"])(0, 129));
                 }
                 else if (arg) {
                     if (!this.state.report.availablePokemon.includes(Object(_utils__WEBPACK_IMPORTED_MODULE_3__["toCapitalCase"])(arg))) {
                         this.setState({ message: Object(_pokemon_functions__WEBPACK_IMPORTED_MODULE_6__["returnUnavailable"])(this.state.report.availablePokemon) });
-                        return;
+                    }
+                    else if (!Object(lodash__WEBPACK_IMPORTED_MODULE_2__["isEmpty"])(this.state.players.opponent)) {
+                        this.setState({ message: '\nYou can\'t select a new player during a battle!\n\n' });
                     }
                     else {
                         this.returnPokemon(arg);
@@ -50371,19 +50367,18 @@ var Pokemon = /** @class */ (function (_super) {
                 this.setState({ message: Object(_pokemon_functions__WEBPACK_IMPORTED_MODULE_6__["returnReport"])(this.state.report) });
             }
             else if (cmd === 'battle') {
-                // maybe have opponent return most similar move,
-                // or do that half the time to appear smart
+                // First opponent should be easy
                 if (!Object(lodash__WEBPACK_IMPORTED_MODULE_2__["isEmpty"])(this.state.players.user)) {
                     this.returnOpponent();
                 }
                 else if (!Object(lodash__WEBPACK_IMPORTED_MODULE_2__["isEmpty"])(this.state.players.opponent)) {
                     this.setState({
-                        message: 'You\'re already in a battle! You can\'t get a new opponent.\nYou can \'forfeit\' to battle someone new.'
+                        message: '\nYou\'re already in a battle! You can\'t get a new opponent.\nYou can \'forfeit\' to battle someone new.\n'
                     });
                 }
                 else {
                     this.setState({
-                        message: 'You need to pick a Pokemon before battling'
+                        message: "\nYou need to pick a Pokemon before battling. Try: play pikachu\n\n"
                     });
                 }
             }
@@ -50396,16 +50391,28 @@ var Pokemon = /** @class */ (function (_super) {
             }
             else if (cmd === 'use') {
                 if (arg) {
-                    if (this.state.players.user.moves.includes(arg)) {
-                        this.returnMove(arg);
+                    if (!Object(lodash__WEBPACK_IMPORTED_MODULE_2__["isEmpty"])(this.state.players.user)) {
+                        if (!Object(lodash__WEBPACK_IMPORTED_MODULE_2__["isEmpty"])(this.state.players.opponent)) {
+                            if (this.state.players.user.moves.includes(arg)) {
+                                this.returnMove(arg);
+                            }
+                            else {
+                                this.setState({ message: '\nYour Pokemon doesn\'t have that move!\n\n' });
+                            }
+                        }
+                        else {
+                            this.setState({ message: "\nYou need to battle before using a move.\n\n" });
+                        }
                     }
                     else {
-                        this.setState({ message: 'Your Pokemon doesn\'t have that move!' });
+                        this.setState({
+                            message: Object(_pokemon_functions__WEBPACK_IMPORTED_MODULE_6__["returnError"])(arg, 'move'),
+                        });
                     }
                 }
                 else {
                     this.setState({
-                        message: 'Use what?'
+                        message: '\nUse what?\n\n'
                     });
                 }
             }
@@ -50421,19 +50428,23 @@ var Pokemon = /** @class */ (function (_super) {
                 this.endBattle(true);
             }
             else if (this.state.currPlayer === "opponent") {
+                // Runs . . . animation in terminal
                 this.setState({ loading: true });
                 setTimeout(function () {
                     var randomMove = _this.state.players.opponent.moves[Object(_utils__WEBPACK_IMPORTED_MODULE_3__["getRandomInteger"])(0, 9)];
                     _this.returnMove(randomMove);
                     _this.setState({ loading: false });
-                }, 1000);
+                }, 2000);
+            }
+            else if (this.state.currPlayer === "user") {
+                this.setState({ message: '\nUse another move!\n\n' });
             }
         }
         // Something Special
-        if (prevState.report.userXP !== this.state.report.userXP && this.state.report.userXP >= 500) {
+        if (prevState.report.userXP !== this.state.report.userXP && this.state.report.userXP >= 500 && prevState.report.userXP < 500) {
             _pokemon_data__WEBPACK_IMPORTED_MODULE_4__["SUCCESS"].split('\n').forEach(function (line) { return setTimeout(function () {
                 _this.setState({ message: line });
-            }, 500); });
+            }, 1000); });
         }
     };
     Pokemon.prototype.render = function () {
@@ -50546,7 +50557,7 @@ var getAsciiArt = function (pokemon) { return __awaiter(void 0, void 0, void 0, 
 /*!**********************************************!*\
   !*** ./src/components/demos/pokemon/data.ts ***!
   \**********************************************/
-/*! exports provided: PIKACHU_V2, MAGIKARP_V1, SUCCESS, pokemonRules, extensions, history, structure */
+/*! exports provided: PIKACHU_V2, MAGIKARP_V1, SUCCESS, pokemonRules, extensions, history, structure, asciiNumbers */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -50558,6 +50569,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "extensions", function() { return extensions; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "history", function() { return history; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "structure", function() { return structure; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "asciiNumbers", function() { return asciiNumbers; });
 // Flat data for the Pokemon API Battle Game demo
 // If in backticks, probably ends up in <pre> tag,
 // so preserving whitespace is important
@@ -50566,11 +50578,11 @@ __webpack_require__.r(__webpack_exports__);
 /*  - - - - - - - - - - - - -  */
 var PIKACHU_V2 = "\n         /\\  /\\                              /\\________     \\\\\\\\\\\n        / /  )/                             / /         \\\\\\\\\\\\\\\\\n       / /     ______   ______   ______    / /          \\\\\\\\\\\\\\\n      / /     /_____/  /_____/  /_____/   / /           \\\\\\\\\\\n     / /                                 / /     _______\\\\\\\\\n     \\/                                  \\/     /\n       /\\      ___            ___              /\\\n      / /     /  /           /  /             / /\n     / /     /  /           /  /             / /\n    / /     (  (           (  (             / /\n   / /       \\  \\    /\\     \\  \\           / /\n   \\/         \\__\\   \\/      \\__\\          \\/\n  /\\                                        /\\\n  \\ \\      ____                ____        / /\n   \\ \\    /====\\   ______     /====\\      / /\n    \\ \\  (===*==) \\      /   (===*==)    / /\n     \\ \\  \\====/   \\____/     \\====/    / /\n      \\/                                \\/                         \n\n";
 var MAGIKARP_V1 = "\n                                __.--.._,-'\"\"-.\n                            ,-' .' ,'  .-\"''-.`.       .--.\n                          ,'    |  |  '`-.    \\ \\       `-.|\n                          /       .   /    `.   \\ \\        ||\n                        /         `..`.    `.   \\ .       ||\n                        /        . .    `.    \\   . .      '.\n              .\"-.    .  ,\"\"'-. | |      \\    \\   `.`.__,'.'\n                `. `. .   |     `. |       \\    .    `-..-'\n      _______     .  `|   |   '   .'        .   |...--._\n      `.     `\"--.'   '    .      | .        .  |\"\"''\"-._\"-._\n        `.             \\    `-._..'. .       |  |---.._  `-.__\"-..\n  -.     `.           |\\           `.`      |  |'`-.  `-._   +\"-'\n  `.`.     `-.        | `            .`.       | `. `.    `,\"\n    `.`.      `.      |  '.           ` `      `.  \\  `   /\n    | `.`.    __`.    |`/  `.     ...  `.`.     |   `.   .\n    |   \\ .  `._      | `. / `. .'.' |   \\ \\    |     \\  |\n    |.   ` \\    `-.   |   \\   .'.'/' |    \\ \\   |      ._'\n    | `.  `.\\      `. |    \\ / , '.  |_    . \\  '-.\n    ,     .  .\\       `|     . ' / |  | `-...\\ \\'   `._\n    `.     `.  \\       |.    '/ .  |  |       ' .      `-.\n    .`._    \\` \\      | `. /'  '  |  |       | |       ,.'\n      .  `-.  \\`.\\    ,|   //  '   |  |__  .' | |      |\n      |     `._`| `--' `  //  .    |  '  `\"  /| |   . -'\n      '        `|       `//   '    |   .    / | |   |\n    /....._____|       //   .  ___|   |   /  | |  ,|\n    .         _.'      /, _.--\"'-._ `\".| ,'   | |.'\n    |      _,' / ___   `-'.        `. _|'     |,\n    |  _,-\"  ,'.'   `-.._  `.      _,'         `\n    '-\"   _,','          \"- ....--'\n  /  _.-\"_.'\n  /_,'_,-'\n.'_.-'\n'\"\n";
-var SUCCESS = MAGIKARP_V1.concat("\n\n            #########                    #########\n              #######  CONGRATS  500 XP  #######\n                #####                    #####\n                  ###                    ###\n                    #                    #\n\n\n");
+var SUCCESS = MAGIKARP_V1.concat("\n\n            #########                    #########\n              #######  CONGRATS  500 XP  #######\n                #####                    #####\n                  ###                    ###\n                    #                    #\n\n\n\n");
 /*  - - - - - - - - - - - - -  */
 /*  Pokemon Gameplay Text      */
 /*  - - - - - - - - - - - - -  */
-var pokemonRules = "\n##### COMMANDS ####\n\nplay            Shows you the rules & commands\nreport          Shows your Pokemon, experience, & history\nplay {name}     Chooses Pokemon and shows its stats\nbattle          Begins battle with random Pokemon\nuse {move}      Uses a move seen in play {name}\nforfeit         Ends battle with no penalties\nhelp            See other commands available\n\n\n###################\n### HOW TO PLAY ###\n###################\n\n1.  Type 'play pikachu' to play your first Pokemon\n    and see what moves you can use in battle.\n\n2.  Type 'battle'.\n    A random Pokemon will appear to fight!\n\n3.  Type 'use {move}' to use moves for your chosen Pokemon.\n    Keep fighting your opponent until you win or lose.\n\n4.  If you win, you keep the Pokemon and gain XP!\n\nTIPS: \u2022 Your battle move effect and Pokemon HP go up\n        with your Player XP!\n      \u2022 Something special happens when you reach 500 XP!\n\n##### FORGOT? #####\nTYPE 'play' TO SEE THESE RULES.\n\n";
+var pokemonRules = "\n######################\n##  POKEMON BATTLE! ##\n######################\n\n##### COMMANDS ####\n\nplay            Shows you these rules & commands\nplay {name}     Chooses an available Pokemon & shows its moves\nbattle          Begins battle with random Pokemon\nuse {move}      Uses a move shown in play {name}\nreport          Shows your Pokemon, experience, & history\nforfeit         Ends battle with no penalties\nhelp            See other commands available\n\n###################\n### HOW TO PLAY ###\n###################\n\n1.  Start with your first Pokemon by typing 'play pikachu'.\n\n2.  Type 'battle' to begin a battle with a random Pokemon.\n\n3.  During battle, type 'use {move}'. Your moves show on Step 1.\n\n4.  If you win, you keep the Pokemon and gain XP!\n\nTIPS: \u2022 Your attack power and Pokemon HP go up with your XP.\n      \u2022 Something special happens when you reach 500 XP!\n      \u2022 You can play a Pokemon after you beat them.\n\n###  FORGOT?\n###  TYPE play TO SEE THIS AGAIN\n\n";
 var credits = "\nAPI data provided by https://pokeapi.co/\nMagikarp ASCII art created by fiikus http://www.fiikus.net/asciiart/pokemon/129.txt\nDamage formula from the games, via https://bulbapedia.bulbagarden.net/wiki/Damage\n";
 /*  - - - - - - - - - - - - -  */
 /*  Default Terminal Data      */
@@ -50595,12 +50607,31 @@ var newDir = {
 };
 var history = [
     { value: PIKACHU_V2 },
-    { value: ">> PIKACHU SAYS: " },
-    { value: '>> "PIKA PIKA!"' },
+    // { value: `>> PIKACHU SAYS: ` },
+    // { value: '>> "PIKA PIKA!"' },
     { value: '>> TYPE play TO START' },
 ];
 var structure = { newDir: newDir };
+var asciiNumbers = {
+    0: "  ##\n #  #\n #  #\n #  #\n  ##  ",
+    1: "   #\n   #\n   #\n   #\n   #  ",
+    2: "  ##\n #  #\n   #\n  #\n #### ",
+    3: " ####\n    #\n  ###\n    #\n ###  ",
+    4: " #  #\n #  #\n ####\n    #\n    # ",
+    5: " ####\n #\n ###\n    #\n ###  ",
+    6: "  ###\n #\n ####\n #  #\n #### ",
+    7: " ####\n    #\n   #\n  #\n #    ",
+    8: " ####\n #  #\n ####\n #  #\n #### ",
+    9: " ####\n #  #\n ####\n    #\n ###  "
+};
 // IDEA BANK
+// USER TESTING
+// X make points in battle clearer
+// make first opponent always easy (diglett?)
+// make the moves easier to use (autocomplete?)
+// X make instructions from step to step clearer
+// only show report on a win?
+// X only show wins in report
 /*
   TODO
   test serving content split at \n in terminal
@@ -50611,6 +50642,7 @@ var structure = { newDir: newDir };
   add randomized commentary (increasingly personal or odd)
   let user save progress in cache += save leaderboard on some server
   add regions and weather
+  add skill to using an attack based on last player's attack
 */
 
 
@@ -50620,13 +50652,14 @@ var structure = { newDir: newDir };
 /*!***************************************************!*\
   !*** ./src/components/demos/pokemon/functions.ts ***!
   \***************************************************/
-/*! exports provided: returnError, returnUnavailable, returnReport, formatPokemonResponse, formatMoveResponse, formatGameResponse, transformPokemonData, transformMoveData, calculateDamage */
+/*! exports provided: returnError, returnUnavailable, score, returnReport, formatPokemonResponse, formatMoveResponse, formatGameResponse, transformPokemonData, transformMoveData, calculateDamage */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "returnError", function() { return returnError; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "returnUnavailable", function() { return returnUnavailable; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "score", function() { return score; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "returnReport", function() { return returnReport; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "formatPokemonResponse", function() { return formatPokemonResponse; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "formatMoveResponse", function() { return formatMoveResponse; });
@@ -50634,45 +50667,76 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "transformPokemonData", function() { return transformPokemonData; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "transformMoveData", function() { return transformMoveData; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "calculateDamage", function() { return calculateDamage; });
-/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../utils */ "./src/utils.ts");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../utils */ "./src/utils.ts");
+/* harmony import */ var _data__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./data */ "./src/components/demos/pokemon/data.ts");
 // Functions for gameplay
+
+
 
 /*  - - - - - - - - - - - - -  */
 /*  Data formatting functions  */
 /*  - - - - - - - - - - - - -  */
+// Because responses appear in a <pre> tag,
+// we format text exactly as desired to appear
+// Sorry for the eye strain
 var returnError = function (val, type) {
-    return val + " is not a real " + type + "! Check your spelling?";
+    return "\n" + val + " is not a " + type + "! Check your spelling?\n\n";
 };
 var returnUnavailable = function (data) {
-    return "\nSorry, that Pokemon is not available to you. Try one of these:\n\n  " + data.join('\n') + "\n        ";
+    return "\nSorry, that Pokemon is not available to you. Try one of these:\n\n  " + data.join('\n  ') + "\n\n";
+};
+var score = function (_a) {
+    var user = _a.user, opponent = _a.opponent;
+    // Can only work if both Pokemon are available
+    if (Object(lodash__WEBPACK_IMPORTED_MODULE_0__["isEmpty"])(user) || Object(lodash__WEBPACK_IMPORTED_MODULE_0__["isEmpty"])(opponent))
+        return;
+    var getAsciiHp = function (hp) {
+        return String(hp)
+            .padStart(3, '0')
+            .split('')
+            .map(function (num) { return _data__WEBPACK_IMPORTED_MODULE_2__["asciiNumbers"][num]
+            .split('\n'); });
+    };
+    var userScore = getAsciiHp(user.stats.hp);
+    var opponentScore = getAsciiHp(opponent.stats.hp);
+    var top = "\n   ###  PLAYER 1  ###           ###  OPPONENT  ###\n........................     ........................";
+    var bottom = "........................     ........................";
+    return "\n" + top + "\n. " + userScore[0][0].padEnd(6, ' ') + " " + userScore[1][0].padEnd(6, ' ') + " " + userScore[2][0].padEnd(6, ' ') + " .     . " + opponentScore[0][0].padEnd(6, ' ') + " " + opponentScore[1][0].padEnd(6, ' ') + " " + opponentScore[2][0].padEnd(6, ' ') + " .\n. " + userScore[0][1].padEnd(6, ' ') + " " + userScore[1][1].padEnd(6, ' ') + " " + userScore[2][1].padEnd(6, ' ') + " .     . " + opponentScore[0][1].padEnd(6, ' ') + " " + opponentScore[1][1].padEnd(6, ' ') + " " + opponentScore[2][1].padEnd(6, ' ') + " .\n. " + userScore[0][2].padEnd(6, ' ') + " " + userScore[1][2].padEnd(6, ' ') + " " + userScore[2][2].padEnd(6, ' ') + " .     . " + opponentScore[0][2].padEnd(6, ' ') + " " + opponentScore[1][2].padEnd(6, ' ') + " " + opponentScore[2][2].padEnd(6, ' ') + " .\n. " + userScore[0][3].padEnd(6, ' ') + " " + userScore[1][3].padEnd(6, ' ') + " " + userScore[2][3].padEnd(6, ' ') + " .     . " + opponentScore[0][3].padEnd(6, ' ') + " " + opponentScore[1][3].padEnd(6, ' ') + " " + opponentScore[2][3].padEnd(6, ' ') + " .\n. " + userScore[0][4].padEnd(6, ' ') + " " + userScore[1][4].padEnd(6, ' ') + " " + userScore[2][4].padEnd(6, ' ') + " .     . " + opponentScore[0][4].padEnd(6, ' ') + " " + opponentScore[1][4].padEnd(6, ' ') + " " + opponentScore[2][4].padEnd(6, ' ') + " .\n" + bottom + "\n  ";
+    // need to come up with a nice algorithm for above.
+    // eg return
+    // `
+    //   .   ##     ##       #  .     .   ##    ####   ####  .
+    //   .  #  #   #  #      #  .     .  #  #      #   #  #  .
+    //   .  #  #     #       #  .     .  #  #   ####   ####  .
+    //   .  #  #    #        #  .     .  #  #      #      #  .
+    //   .   ##    ####      #  .     .   ##    ###    ###   .`
 };
 var returnReport = function (data) {
+    // To add WINS: ${data.wins.length ? data.wins.map(win => win.user + '  VS  ' + win.opponent).join('\n  ') : 'NONE'}
     return "\n### PLAYER 1 ######\n\nPLAYER XP: " + data.userXP + "\n\nAVAILABLE POKEMON:\n\n" + ('  ' + data.availablePokemon.map(function (pokemon, i, arr) {
         return pokemon + (!(i % 2) ? i != arr.length - 1 ? ' \t' : '\n' : '\n  ');
-    }).join('')) + "\nWINS:\n\n  " + (data.wins.length ? data.wins.map(function (win) { return win.user + '  VS  ' + win.opponent; }).join('\n  ') : 'NONE') + "\n\nLOSSES:\n\n  " + (data.losses.length ? data.losses.map(function (loss) { return loss.user + '  VS  ' + loss.opponent; }).join('\n  ') : 'NONE') + "\n  ";
+    }).join('')) + "\n";
 };
 var formatPokemonResponse = function (data) {
-    // Because responses appear in a <pre> tag,
-    // we format text exactly as desired to appear
-    // Sorry for the eye strain
     return {
-        pokemon: "\n###################\n" + ('###  ' + data.name.toUpperCase() + '  ').padEnd(19, '#') + "\n###################\n\n" + data.name + " is " + Object(_utils__WEBPACK_IMPORTED_MODULE_0__["getCorrectParticle"])(data.types.join('- & ')) + "-type Pokemon with " + data.stats.hp + " HP.\n\n#####  MOVES  #####\nYou can battle with the following moves:\n" + data.moves.map(function (move) { return "    >>   " + move; }).join(', \n') + "\n\nARE YOU READY TO battle?\n\n",
-        // could add an animation to terminal that
-        // breaks text inputs from line breaks
-        // and serves them like 250ms at a time
-        opponent: "\nYour opponent is...\n\n###################\n" + ('###  ' + data.name.toUpperCase() + '  ').padEnd(19, '#') + "\n###################\n\n" + data.name + " (HP: " + data.stats.hp + ") is winding up their first move!\n\nWHAT MOVE WILL YOU use?\n\n",
+        /////////////////
+        pokemon: "\n###################\n" + ('###  ' + data.name.toUpperCase() + '  ').padEnd(19, '#') + "\n###################\n\n" + data.name + " is " + Object(_utils__WEBPACK_IMPORTED_MODULE_1__["getCorrectParticle"])(data.types.join('- & ')) + "-type Pokemon with " + data.stats.hp + " HP.\n\n#####  MOVES  #####\nYou can battle with the following moves:\n" + data.moves.map(function (move) { return "    >>   " + move; }).join(', \n') + "\n\nType battle to fight!\n\n",
+        //////////////////
+        opponent: "\nYour opponent is...\n\n###################\n" + ('###  ' + data.name.toUpperCase() + '  ').padEnd(19, '#') + "\n###################\n\n" + data.name + " (HP: " + data.stats.hp + ") is winding up their first move!\n\nType use {move name} with your Pokemon's move,\nlike: use body-slam \n\n",
     };
 };
 var formatMoveResponse = function (data) {
     return {
-        attack: "\n### " + data.attacker.name + " goes for the " + data.move.name + "!\n\nThat takes " + data.damage + " HP from " + data.defender.name + ".\n" + data.defender.name + " is now at " + data.defender.stats.hp + " HP!\n",
+        attack: "\n### " + data.attacker.name + " goes for " + Object(_utils__WEBPACK_IMPORTED_MODULE_1__["getCorrectParticle"])(data.move.name) + " attack!\n\nThat takes " + data.damage + " HP from " + data.defender.name + ".\n\n",
     };
 };
 var formatGameResponse = function (_a) {
     var user = _a.user, opponent = _a.opponent;
     return {
-        win: "\n###################\n###  You won!\n###################\n",
-        loss: "\n###################\n###  You lost!\n###################\n"
+        win: "\n###################\n###  You won!\n###  Your XP and your Pokemon's HP went up!\n###################\n\n",
+        loss: "\n###################\n###  You lost!\n###################\n\n"
     };
 };
 var transformPokemonData = function (data) {
@@ -50682,7 +50746,7 @@ var transformPokemonData = function (data) {
         // Get first 10 moves, which are listed by index # so
         // should be basic (otherwise there are too many (80+))
         moves: data.moves.slice(0, 9).map(function (move) { return move.move.name; }),
-        name: Object(_utils__WEBPACK_IMPORTED_MODULE_0__["toCapitalCase"])(data.name),
+        name: Object(_utils__WEBPACK_IMPORTED_MODULE_1__["toCapitalCase"])(data.name),
         types: data.types.map(function (type) { return type.type.name; }),
         stats: data.stats.reduce(function (acc, curr) {
             acc[curr.stat.name] = curr.base_stat;
@@ -50705,7 +50769,7 @@ var transformMoveData = function (data) {
 var calculateDamage = function (_a) {
     var move = _a.move, level = _a.level, attacker = _a.attacker, defender = _a.defender;
     // Damage formula from the games, https://bulbapedia.bulbagarden.net/wiki/Damage
-    return Math.floor((((((2 * level / 5) + 2) * move.power * attacker.stats.attack / defender.stats.defense)) / 50 + 2) * Object(_utils__WEBPACK_IMPORTED_MODULE_0__["getRandomFloat"])());
+    return Math.floor((((((2 * level / 5) + 2) * move.power * attacker.stats.attack / defender.stats.defense)) / 50 + 2) * Object(_utils__WEBPACK_IMPORTED_MODULE_1__["getRandomFloat"])());
 };
 
 

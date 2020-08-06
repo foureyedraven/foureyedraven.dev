@@ -69,46 +69,45 @@ export const SUCCESS = MAGIKARP_V1.concat(`\n
                 #####                    #####
                   ###                    ###
                     #                    #
-\n\n`)
+\n\n\n`)
 
 /*  - - - - - - - - - - - - -  */
 /*  Pokemon Gameplay Text      */
 /*  - - - - - - - - - - - - -  */
 
 export const  pokemonRules = `
+######################
+##  POKEMON BATTLE! ##
+######################
+
 ##### COMMANDS ####
 
-play            Shows you the rules & commands
-report          Shows your Pokemon, experience, & history
-play {name}     Chooses Pokemon and shows its stats
+play            Shows you these rules & commands
+play {name}     Chooses an available Pokemon & shows its moves
 battle          Begins battle with random Pokemon
-use {move}      Uses a move seen in play {name}
+use {move}      Uses a move shown in play {name}
+report          Shows your Pokemon, experience, & history
 forfeit         Ends battle with no penalties
 help            See other commands available
-
 
 ###################
 ### HOW TO PLAY ###
 ###################
 
-1.  Type \'play pikachu\' to play your first Pokemon
-    and see what moves you can use in battle.
+1.  Start with your first Pokemon by typing \'play pikachu\'.
 
-2.  Type \'battle\'.
-    A random Pokemon will appear to fight!
+2.  Type \'battle\' to begin a battle with a random Pokemon.
 
-3.  Type \'use {move}\' to use moves for your chosen Pokemon.
-    Keep fighting your opponent until you win or lose.
+3.  During battle, type \'use {move}\'. Your moves show on Step 1.
 
 4.  If you win, you keep the Pokemon and gain XP!
 
-TIPS: • Your battle move effect and Pokemon HP go up
-        with your Player XP!
+TIPS: • Your attack power and Pokemon HP go up with your XP.
       • Something special happens when you reach 500 XP!
+      • You can play a Pokemon after you beat them.
 
-##### FORGOT? #####
-TYPE \'play\' TO SEE THESE RULES.
-\n`
+###  FORGOT?
+###  TYPE play TO SEE THIS AGAIN\n\n`
 
 const credits = `
 API data provided by https://pokeapi.co/
@@ -144,15 +143,76 @@ const newDir = {
 
 export const history = [
   { value: PIKACHU_V2 },
-  { value: `>> PIKACHU SAYS: ` },
-  { value: '>> "PIKA PIKA!"' },
+  // { value: `>> PIKACHU SAYS: ` },
+  // { value: '>> "PIKA PIKA!"' },
   { value: '>> TYPE play TO START' },
 ]
 
 export const structure = { newDir }
 
+export const asciiNumbers = {
+  0: `  ##
+ #  #
+ #  #
+ #  #
+  ##  `,
+  1: `   #
+   #
+   #
+   #
+   #  `,
+  2: `  ##
+ #  #
+   #
+  #
+ #### `,
+  3: ` ####
+    #
+  ###
+    #
+ ###  `,
+  4: ` #  #
+ #  #
+ ####
+    #
+    # `,
+  5: ` ####
+ #
+ ###
+    #
+ ###  `,
+  6: `  ###
+ #
+ ####
+ #  #
+ #### `,
+  7: ` ####
+    #
+   #
+  #
+ #    `,
+  8: ` ####
+ #  #
+ ####
+ #  #
+ #### `,
+  9: ` ####
+ #  #
+ ####
+    #
+ ###  `
+
+}
 
 // IDEA BANK
+
+// USER TESTING
+// X make points in battle clearer
+// X make first opponent always easy (diglett?)
+// make the moves easier to use (autocomplete?)
+// X make instructions from step to step clearer
+// only show report on a win?
+// X only show wins in report
 
 /*
   TODO
@@ -164,4 +224,5 @@ export const structure = { newDir }
   add randomized commentary (increasingly personal or odd)
   let user save progress in cache += save leaderboard on some server
   add regions and weather
+  add skill to using an attack based on last player's attack
 */
