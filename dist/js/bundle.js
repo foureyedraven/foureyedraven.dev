@@ -49904,37 +49904,33 @@ var Tabs = function (_a) {
 };
 var Profile = function () {
     return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { style: styles.textBody },
-        "I'm a fullstack web developer who loves backend work and interacting with hardware.",
+        "I'm a fullstack web developer who loves backend development and learning hardware.",
         react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("br", null),
         react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("br", null),
         "My tech experience includes:",
         react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("br", null),
         react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("ul", null,
-            react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("li", null, "building web apps from scratch using node.js, CSS, HTML, React and React Native,"),
+            react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("li", null, "building web apps from scratch using node.js, CSS, HTML, React, and Typescript,"),
             react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("li", null, "implementing UX/UI designs with Flex Box or Bootstrap,"),
-            react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("li", null, "API development with node.js, and PostgreSQL for queries, migrations and db management,"),
+            react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("li", null, "API development with node.js,"),
+            react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("li", null, "PostgreSQL for queries, migrations and db management,"),
             react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("li", null, "integrating 3rd party APIs,"),
             react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("li", null, "BLE device and message management,"),
             react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("li", null, "scripting and library implementation with Python 3, notably openCV.")),
-        "I learned most of this from scratch on the job in my first 6 months. Before my Jr Dev job, I learned MVC architecture with Ruby on Rails and HTML and CSS from many 90s Geocities sites. I also developed the majority of the consumer and educational coding content for ",
-        react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("a", { style: styles.a, href: 'https://ozobot.com', target: '_blank' }, "Ozobot's"),
-        " robots using Blockly.",
+        react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("br", null),
+        react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { style: { width: 'fit-content' } },
+            react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("a", { style: styles.a, target: "_blank", href: "https://docs.google.com/document/d/1SNIqC6LjeXw5NvsxRQd6JKZxAlE6pKgrGa_xc7sfs1I/?usp=sharing" }, "Check out my resume \u21E8")),
         react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("br", null),
         react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("br", null),
-        "Code is open-ended and allows limitless creativity. I believe it's how to participate in building the future. That's why it's my career of choice.",
+        "Some fun facts! My Master's degree is in Archaeology and Arabic from the University of Edinburgh in Scotland, and after that I was a grade school teacher for 5+ years. I've lived on four continents and have 2.5 passports. I started using MS-DOS for playing computer games as a kid in the mid-90s. These days, I do small-scale farming and aquaponics at home, and translate medieval Arabic poetry and science treatises for fun.",
         react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("br", null),
         react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("br", null),
-        "Some fun facts! My Master's degree is in Archaeology and Arabic from the University of Edinburgh in Scotland, and after that I was a grade school teacher for 5+ years. I've lived on four continents and have 2.5 passports. I started using the terminal for playing computer games in 1997. These days, I do small-scale farming and aquaponics at home, and translate medieval Arabic poetry and science treatises for fun.",
-        react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("br", null),
-        react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("br", null),
-        "I believe the best future is one where we build and support community. Here are some great tech initiatives helping their communities right now:",
+        "The best future is one where we build and support community. Here are some great tech initiatives helping their communities right now:",
         react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("ul", null,
             react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("li", null,
                 react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("a", { style: styles.a, target: "_blank", href: "https://codecooperative.org/" }, "Code Cooperative mentors people affected by incarceration \u21E8")),
             react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("li", null,
-                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("a", { style: styles.a, target: "_blank", href: "https://elpha.com/" }, "Elpha provides a social network to women and femmes in tech \u21E8"))),
-        react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { style: { width: 'fit-content', marginTop: '45px' } },
-            react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("a", { style: styles.a, target: "_blank", href: "https://docs.google.com/document/d/1SNIqC6LjeXw5NvsxRQd6JKZxAlE6pKgrGa_xc7sfs1I/?usp=sharing" }, "Check out my resume \u21E8"))));
+                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("a", { style: styles.a, target: "_blank", href: "https://elpha.com/" }, "Elpha provides a social network to women and femmes in tech \u21E8")))));
 };
 var Demo = function (_a) {
     var data = _a.data;
@@ -49948,8 +49944,7 @@ var Demos = function (data) {
     return (Object.values(data).map(function (demo) { return Demo({ data: demo }); }));
 };
 var Contact = function () {
-    return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", null,
-        react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("h2", null, "Coming Soon")));
+    return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", null));
 };
 var demos = {
     pokemon: {
@@ -49991,9 +49986,6 @@ var tabs = {
     },
     'Profile': {
         component: Profile
-    },
-    'Contact': {
-        component: Contact
     },
 };
 var Content = /** @class */ (function (_super) {
@@ -50627,7 +50619,7 @@ var asciiNumbers = {
 // IDEA BANK
 // USER TESTING
 // X make points in battle clearer
-// make first opponent always easy (diglett?)
+// X make first opponent always easy (diglett?)
 // make the moves easier to use (autocomplete?)
 // X make instructions from step to step clearer
 // only show report on a win?

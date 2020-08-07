@@ -86,28 +86,32 @@ const Tabs = ({ tabs, selected, selectFn }) => {
 const Profile = () => {
   return (
     <div style={styles.textBody}>
-        I'm a fullstack web developer who loves backend work and interacting with hardware.
+        I'm a fullstack web developer who loves backend development and learning hardware.
         <br/><br/>
         My tech experience includes:<br/>
         <ul>
           <li>
-            building web apps from scratch using node.js, CSS, HTML, React and React Native,
+            building web apps from scratch using node.js, CSS, HTML, React, and Typescript,
           </li>
           <li>implementing UX/UI designs with Flex Box or Bootstrap,</li>
           <li>
-            API development with node.js, and PostgreSQL for queries, migrations and db management,
+            API development with node.js,
+          </li>
+          <li>
+            PostgreSQL for queries, migrations and db management,
           </li>
           <li>integrating 3rd party APIs,</li>
           <li>BLE device and message management,</li>
           <li>scripting and library implementation with Python 3, notably openCV.</li>
         </ul>
-        I learned most of this from scratch on the job in my first 6 months. Before my Jr Dev job, I learned MVC architecture with Ruby on Rails and HTML and CSS from many 90s Geocities sites. I also developed the majority of the consumer and educational coding content for <a style={styles.a} href='https://ozobot.com' target='_blank'>Ozobot's</a> robots using Blockly.
+        <div style={{ width: 'fit-content' }}>
+          <a style={styles.a} target="_blank" href="https://docs.google.com/document/d/1SNIqC6LjeXw5NvsxRQd6JKZxAlE6pKgrGa_xc7sfs1I/?usp=sharing">Check out my resume &#x21E8;</a>
+        </div>
         <br/><br/>
-        Code is open-ended and allows limitless creativity. I believe it's how to participate in building the future. That's why it's my career of choice.
+        {/* I learned most of this from scratch on the job in my first 6 months. Before my Jr Dev job, I learned MVC architecture with Ruby on Rails and HTML and CSS from many 90s Geocities sites. I also developed the majority of the consumer and educational coding content for <a style={styles.a} href='https://ozobot.com' target='_blank'>Ozobot's</a> robots using Blockly. */}
+        Some fun facts! My Master's degree is in Archaeology and Arabic from the University of Edinburgh in Scotland, and after that I was a grade school teacher for 5+ years. I've lived on four continents and have 2.5 passports. I started using MS-DOS for playing computer games as a kid in the mid-90s. These days, I do small-scale farming and aquaponics at home, and translate medieval Arabic poetry and science treatises for fun.
         <br/><br/>
-        Some fun facts! My Master's degree is in Archaeology and Arabic from the University of Edinburgh in Scotland, and after that I was a grade school teacher for 5+ years. I've lived on four continents and have 2.5 passports. I started using the terminal for playing computer games in 1997. These days, I do small-scale farming and aquaponics at home, and translate medieval Arabic poetry and science treatises for fun.
-        <br/><br/>
-        I believe the best future is one where we build and support community. Here are some great tech initiatives helping their communities right now:
+        The best future is one where we build and support community. Here are some great tech initiatives helping their communities right now:
         <ul>
           <li>
             <a style={styles.a} target="_blank" href="https://codecooperative.org/">Code Cooperative mentors people affected by incarceration &#x21E8;</a>
@@ -116,9 +120,6 @@ const Profile = () => {
             <a style={styles.a} target="_blank" href="https://elpha.com/">Elpha provides a social network to women and femmes in tech &#x21E8;</a>
           </li>
         </ul>
-      <div style={{ width: 'fit-content', marginTop: '45px' }}>
-        <a style={styles.a} target="_blank" href="https://docs.google.com/document/d/1SNIqC6LjeXw5NvsxRQd6JKZxAlE6pKgrGa_xc7sfs1I/?usp=sharing">Check out my resume &#x21E8;</a>
-      </div>
     </div>
   )
 }
@@ -146,9 +147,7 @@ const Demos = (data) => {
 const Contact = () => {
   return (
     <div>
-     <h2>
-      Coming Soon
-     </h2>
+
     </div>
   )
 }
@@ -198,9 +197,9 @@ const tabs =  {
   'Profile': {
     component: Profile
   },
-  'Contact': {
-    component: Contact
-  },
+  // 'Contact': {
+  //   component: Contact
+  // },
 }
 
 interface NavTabsState {
