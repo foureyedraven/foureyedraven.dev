@@ -3,7 +3,6 @@
   to interact with PokeAPI (https://pokeapi.co/) and deliver
   an interactive Pokemon battle game in the client.
 */
-
 import * as React from 'react'
 import Terminal from 'react-bash-typescript'
 import { isEmpty } from 'lodash'
@@ -60,6 +59,7 @@ interface PokemonProps {
 }
 
 export class Pokemon extends React.Component<Props, State> {
+  private inputRef: React.RefObject<HTMLInputElement>;
   constructor(props: Props) {
     super(props)
     this.state = {
@@ -78,9 +78,15 @@ export class Pokemon extends React.Component<Props, State> {
       },
       loading: false
     }
+    this.inputRef = React.createRef()
   }
 
   componentDidUpdate(prevProps, prevState) {
+    // Fix for Chrome, which likes to control/twitch the body scroll height.
+    // which ruins the UX. Below forces users to play game with terminal scrolled
+    // to either "top", "center", or "bottom" on Chrome.
+    this.inputRef.current.scrollIntoView({ behavior: "auto", block: "center" })
+
     // Commands as "input" are coming from Terminal to operate gameplay:
     if (prevState.input !== this.state.input && this.state.message === '') {
       const inputArr = this.state.input.toLowerCase().split(' ')
@@ -317,7 +323,7 @@ export class Pokemon extends React.Component<Props, State> {
 
   render() {
     return (
-      <div>
+      <div ref={this.inputRef}>
         <Terminal
           extensions={extensions}
           structure={structure}
