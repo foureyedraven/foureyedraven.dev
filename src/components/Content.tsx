@@ -210,12 +210,16 @@ export class Content extends React.Component<{}, NavTabsState> {
   constructor(props: {}) {
     super(props);
     this.state = { tabState: "Demos" };
-
   }
+
+  componentDidMount() {
+    setTimeout(() => { window.scrollTo(0, 0) }, 100)
+  }
+
   render() {
     return (
       <div style={styles.main}>
-        <Tabs tabs={tabs} selected={this.state.tabState} selectFn={val => this.setState({ tabState: val})} />
+        <Tabs tabs={tabs} selected={this.state.tabState} selectFn={val => this.setState({ tabState: val })} />
         <div style={styles.content}>
           {React.createElement(tabs[this.state.tabState].component, tabs[this.state.tabState].data || undefined)}
         </div>
