@@ -1,6 +1,7 @@
 import * as React from "react"
 import { TabState } from "./constants"
 import Pokemon from "./demos/pokemon"
+import { getSourceCode } from "./demos/pokemon/api"
 
 const styles = {
   main: {
@@ -124,7 +125,23 @@ const Profile = () => {
   )
 }
 
-const Demo = ({ data }) => {
+const DemoCodeIFrame = (code) => {
+  console.log("TEST", code)
+  return (
+    <div style={{ height: 400, overflow: 'scroll', width: '100%'}}>
+      <pre>{code}</pre>
+    </div>
+    // <iframe
+    //   frameBorder={0}
+    //   style={{width: "100%", height: "425px"}}
+    //   scrolling="no"
+    //   seamless={false}
+    //   srcDoc={`<html><body><style type="text/plain">{ height: 370px; }</style><script src=${data.sourceCode}></script></body></html>`}>
+    // </iframe>
+  )
+}
+
+const Demo = ({ data, viewCode, code }) => {
   return (
     <div style={styles.demoWell} key={data.title}>
       <div>
@@ -132,7 +149,7 @@ const Demo = ({ data }) => {
       </div>
       <p style={{ fontWeight: 400 }}>{data.subtitle}</p>
       <div style={{ margin: 33 }}>
-        {!!data.component ? React.createElement(data.component) : <p style={{ fontSize: 16, color: '#444' }}>Coming Soon...</p>}
+        {viewCode ? DemoCodeIFrame(code) : !!data.component ? React.createElement(data.component) : <p style={{ fontSize: 16, color: '#444' }}>Coming Soon...</p>}
       </div>
     </div>
   )
@@ -140,7 +157,7 @@ const Demo = ({ data }) => {
 
 const Demos = (data) => {
   return (
-    Object.values(data).map(demo => Demo({ data: demo }))
+    Object.values(data.demos).map(demo => Demo({ data: demo, viewCode: true, code:data.source }))
   )
 }
 
@@ -154,6 +171,7 @@ const Contact = () => {
 
 const demos = {
   pokemon: {
+    key: 'pokemon',
     title: 'Pokemon API Battle Game',
     subtitle: 'play a terminal Pokemon game that uses a Pokedex API',
     start: 'type \'help\' into the terminal to start',
@@ -204,16 +222,21 @@ const tabs =  {
 
 interface NavTabsState {
   tabState: TabState
+  sourceCode: any
 }
 
 export class Content extends React.Component<{}, NavTabsState> {
   constructor(props: {}) {
     super(props);
-    this.state = { tabState: "Demos" };
+    this.state = {
+      tabState: "Demos",
+      sourceCode: ""
+    };
   }
 
   componentDidMount() {
     setTimeout(() => { window.scrollTo(0, 0) }, 100)
+    getSourceCode().then(data => this.setState({ sourceCode: data.data }))
   }
 
   render() {
@@ -221,7 +244,7 @@ export class Content extends React.Component<{}, NavTabsState> {
       <div style={styles.main}>
         <Tabs tabs={tabs} selected={this.state.tabState} selectFn={val => this.setState({ tabState: val })} />
         <div style={styles.content}>
-          {React.createElement(tabs[this.state.tabState].component, tabs[this.state.tabState].data || undefined)}
+          {React.createElement(tabs[this.state.tabState].component, Object.assign({ demos: tabs[this.state.tabState].data }, { source: this.state.sourceCode }))}
         </div>
       </div>
     )

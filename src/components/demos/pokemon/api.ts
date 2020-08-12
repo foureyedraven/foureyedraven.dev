@@ -19,3 +19,7 @@ export const getMove = async (move:string | number) => {
 export const getAsciiArt = async (pokemon:number | string) => {
   return await axios.get(`https://www.fiikus.net/asciiart/pokemon/${pokemon}.txt`)
 }
+
+export const getSourceCode = async () => {
+  return await axios.get(`https://raw.githubusercontent.com/foureyedraven/foureyedraven.dev/main/src/components/demos/pokemon.tsx`)
+}
