@@ -179,7 +179,9 @@ export class Pokemon extends React.Component<Props, State> {
     }
 
     // Something Special
-    if (prevState.report.userXP !== this.state.report.userXP && this.state.report.userXP >= 500 && prevState.report.userXP < 500) {
+    if (prevState.report.userXP !== this.state.report.userXP
+      && this.state.report.userXP >= 500 && prevState.report.userXP < 500
+    ) {
       SUCCESS.split('\n').forEach(line => setTimeout(() => {
         this.setState({message: line})
       }, 1000))
@@ -267,7 +269,9 @@ export class Pokemon extends React.Component<Props, State> {
     if (win) {
       report = {
         ...this.state.report,
-        availablePokemon: !this.state.report.availablePokemon.includes(opponent.name) ? this.state.report.availablePokemon.concat(opponent.name) : this.state.report.availablePokemon,
+        availablePokemon: !this.state.report.availablePokemon.includes(opponent.name) ?
+          this.state.report.availablePokemon.concat(opponent.name)
+          : this.state.report.availablePokemon,
         userXP: this.state.report.userXP + opponent.base_experience,
         wins: this.state.report.wins.concat({
           user: user.name,

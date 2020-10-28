@@ -52002,6 +52002,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _demos_pokemon__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./demos/pokemon */ "./src/components/demos/pokemon.tsx");
 /* harmony import */ var _demos_pokemon_api__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./demos/pokemon/api */ "./src/components/demos/pokemon/api.ts");
+/* harmony import */ var _utils_sourceCode__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./utils/sourceCode */ "./src/components/utils/sourceCode.tsx");
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -52026,6 +52027,7 @@ var __assign = (undefined && undefined.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
+
 
 
 
@@ -52132,17 +52134,7 @@ var Profile = function () {
                 react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("a", { style: styles.a, target: "_blank", href: "https://elpha.com/" }, "Elpha provides a social network to women and femmes in tech \u21E8")))));
 };
 var DemoCodeIFrame = function (code) {
-    console.log("TEST", code);
-    return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { style: { height: 400, overflow: 'scroll', width: '100%' } },
-        react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("pre", null, code))
-    // <iframe
-    //   frameBorder={0}
-    //   style={{width: "100%", height: "425px"}}
-    //   scrolling="no"
-    //   seamless={false}
-    //   srcDoc={`<html><body><style type="text/plain">{ height: 370px; }</style><script src=${data.sourceCode}></script></body></html>`}>
-    // </iframe>
-    );
+    return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { style: { height: 400, overflow: 'scroll', width: 'inherit', background: "#222" } }, Object(_utils_sourceCode__WEBPACK_IMPORTED_MODULE_3__["sourceCode"])(code)));
 };
 var Demo = function (_a) {
     var data = _a.data, viewCode = _a.viewCode, code = _a.code;
@@ -52154,9 +52146,6 @@ var Demo = function (_a) {
 };
 var Demos = function (data) {
     return (Object.values(data.demos).map(function (demo) { return Demo({ data: demo, viewCode: true, code: data.source }); }));
-};
-var Contact = function () {
-    return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", null));
 };
 var demos = {
     pokemon: {
@@ -52489,7 +52478,9 @@ var Pokemon = /** @class */ (function (_super) {
             var _a = _this.state.players, user = _a.user, opponent = _a.opponent;
             var report;
             if (win) {
-                report = __assign(__assign({}, _this.state.report), { availablePokemon: !_this.state.report.availablePokemon.includes(opponent.name) ? _this.state.report.availablePokemon.concat(opponent.name) : _this.state.report.availablePokemon, userXP: _this.state.report.userXP + opponent.base_experience, wins: _this.state.report.wins.concat({
+                report = __assign(__assign({}, _this.state.report), { availablePokemon: !_this.state.report.availablePokemon.includes(opponent.name) ?
+                        _this.state.report.availablePokemon.concat(opponent.name)
+                        : _this.state.report.availablePokemon, userXP: _this.state.report.userXP + opponent.base_experience, wins: _this.state.report.wins.concat({
                         user: user.name,
                         opponent: opponent.name
                     }) });
@@ -52659,7 +52650,8 @@ var Pokemon = /** @class */ (function (_super) {
             }
         }
         // Something Special
-        if (prevState.report.userXP !== this.state.report.userXP && this.state.report.userXP >= 500 && prevState.report.userXP < 500) {
+        if (prevState.report.userXP !== this.state.report.userXP
+            && this.state.report.userXP >= 500 && prevState.report.userXP < 500) {
             _pokemon_data__WEBPACK_IMPORTED_MODULE_4__["SUCCESS"].split('\n').forEach(function (line) { return setTimeout(function () {
                 _this.setState({ message: line });
             }, 1000); });
@@ -52997,6 +52989,31 @@ var calculateDamage = function (_a) {
     var move = _a.move, level = _a.level, attacker = _a.attacker, defender = _a.defender;
     // Damage formula from the games, https://bulbapedia.bulbagarden.net/wiki/Damage
     return Math.floor((((((2 * level / 5) + 2) * move.power * attacker.stats.attack / defender.stats.defense)) / 50 + 2) * Object(_utils__WEBPACK_IMPORTED_MODULE_1__["getRandomFloat"])());
+};
+
+
+/***/ }),
+
+/***/ "./src/components/utils/sourceCode.tsx":
+/*!*********************************************!*\
+  !*** ./src/components/utils/sourceCode.tsx ***!
+  \*********************************************/
+/*! exports provided: sourceCode */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "sourceCode", function() { return sourceCode; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+
+var sourceCode = function (code) {
+    var lineByLineCode = code.split(/\r?\n/);
+    var lineText = function (line, key) { return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { style: { backgroundColor: "#222", color: "#fff", fontFamily: "monospace", margin: 0, display: 'flex', flexDirection: 'row' } },
+        react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { style: { minWidth: 30 } },
+            react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("p", { style: { margin: 0 } }, "" + (key + 1))),
+        react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("pre", { style: { color: "#fff", fontFamily: "monospace", margin: 0 } }, "" + " " + line))); };
+    return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { style: { backgroundColor: "#222", padding: 15 } }, lineByLineCode.map(function (line, key) { return lineText(line, key); })));
 };
 
 

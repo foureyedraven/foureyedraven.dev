@@ -2,6 +2,7 @@ import * as React from "react"
 import { TabState } from "./constants"
 import Pokemon from "./demos/pokemon"
 import { getSourceCode } from "./demos/pokemon/api"
+import { sourceCode } from "./utils/sourceCode"
 
 const styles = {
   main: {
@@ -126,18 +127,10 @@ const Profile = () => {
 }
 
 const DemoCodeIFrame = (code) => {
-  console.log("TEST", code)
   return (
-    <div style={{ height: 400, overflow: 'scroll', width: '100%'}}>
-      <pre>{code}</pre>
+    <div style={{ height: 400, overflow: 'scroll', width: 'inherit', background: "#222"}}>
+      {sourceCode(code)}
     </div>
-    // <iframe
-    //   frameBorder={0}
-    //   style={{width: "100%", height: "425px"}}
-    //   scrolling="no"
-    //   seamless={false}
-    //   srcDoc={`<html><body><style type="text/plain">{ height: 370px; }</style><script src=${data.sourceCode}></script></body></html>`}>
-    // </iframe>
   )
 }
 
@@ -158,14 +151,6 @@ const Demo = ({ data, viewCode, code }) => {
 const Demos = (data) => {
   return (
     Object.values(data.demos).map(demo => Demo({ data: demo, viewCode: true, code:data.source }))
-  )
-}
-
-const Contact = () => {
-  return (
-    <div>
-
-    </div>
   )
 }
 
@@ -215,9 +200,6 @@ const tabs =  {
   'Profile': {
     component: Profile
   },
-  // 'Contact': {
-  //   component: Contact
-  // },
 }
 
 interface NavTabsState {
