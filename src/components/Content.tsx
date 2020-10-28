@@ -2,6 +2,8 @@ import * as React from "react"
 import { TabState } from "./constants"
 import Pokemon from "./demos/pokemon"
 
+const logo = require("../../public/assets/GitHub-Mark-32px.png")
+
 const styles = {
   main: {
     margin: 0,
@@ -85,10 +87,12 @@ const Tabs = ({ tabs, selected, selectFn }) => {
 
 const Profile = () => {
   return (
-    <div style={styles.textBody}>
-        I'm a fullstack web developer who loves backend development and learning hardware.
+    <div>
+    <p style={styles.textBody}>
+      <h2>My CV</h2>
+        I've worked as a fullstack web developer since December 2018, and I love API development and interacting with hardware.
         <br/><br/>
-        My tech experience includes:<br/>
+        My experience includes:<br/>
         <ul>
           <li>
             building web apps from scratch using node.js, CSS, HTML, React, and Typescript,
@@ -103,23 +107,28 @@ const Profile = () => {
           <li>integrating 3rd party APIs,</li>
           <li>BLE device and message management,</li>
           <li>scripting and library implementation with Python 3, notably openCV.</li>
-        </ul>
+        </ul><br/>
+        In my current role at <a style={styles.a} target="_blank" href="https://ozobot.com/">Ozobot</a>, I get to create and participate in new ways to deliver educational content and assessment of student work. Classwork is more worthwhile when students are naturally engaged, and I'm proud of the work we have done to break educational moulds to benefit the student.
+        <br/><br/>
         <div style={{ width: 'fit-content' }}>
           <a style={styles.a} target="_blank" href="https://docs.google.com/document/d/1SNIqC6LjeXw5NvsxRQd6JKZxAlE6pKgrGa_xc7sfs1I/?usp=sharing">Check out my resume &#x21E8;</a>
         </div>
-        <br/><br/>
+        <br/>
+        <h2>About Me</h2>
         {/* I learned most of this from scratch on the job in my first 6 months. Before my Jr Dev job, I learned MVC architecture with Ruby on Rails and HTML and CSS from many 90s Geocities sites. I also developed the majority of the consumer and educational coding content for <a style={styles.a} href='https://ozobot.com' target='_blank'>Ozobot's</a> robots using Blockly. */}
-        Some fun facts! My Master's degree is in Archaeology and Arabic from the University of Edinburgh in Scotland, and after that I was a grade school teacher for 5+ years. I've lived on four continents and have 2.5 passports. I started using MS-DOS for playing computer games as a kid in the mid-90s. These days, I do small-scale farming and aquaponics at home, and translate medieval Arabic poetry and science treatises for fun.
+        Some fun facts! My master's degree is in Archaeology and Arabic from the University of Edinburgh, Scotland, and after that I was a grade school teacher for 5 years (including in Seoul). I'm a multinational and have lived on four continents. These days, I live in Los Angeles where I garden native plants and am trying out aquaponic farming at home. I also translate medieval Arabic poetry and science treatises for practice.
         <br/><br/>
-        The best future is one where we build and support community. Here are some great tech initiatives helping their communities right now:
+        <h2>Links</h2>
+        I believe nurturing community is important. Here are some great tech initiatives helping their communities right now:
         <ul>
           <li>
             <a style={styles.a} target="_blank" href="https://codecooperative.org/">Code Cooperative mentors people affected by incarceration &#x21E8;</a>
           </li>
           <li>
-            <a style={styles.a} target="_blank" href="https://elpha.com/">Elpha provides a social network to women and femmes in tech &#x21E8;</a>
+            <a style={styles.a} target="_blank" href="https://elpha.com/">Elpha provides a supportive social network to women and non-binary women in tech &#x21E8;</a>
           </li>
         </ul>
+      </p>
     </div>
   )
 }
@@ -127,10 +136,15 @@ const Profile = () => {
 const Demo = ({ data }) => {
   return (
     <div style={styles.demoWell} key={data.title}>
-      <div>
-        <h2>{data.title}</h2>
+      <div style={{display: 'flex', justifyContent: 'space-between'}}>
+        <div>
+          <h2>{data.title}</h2>
+          <p style={{ fontWeight: 400 }}>{data.subtitle}</p>
+        </div>
+        <div style={{padding: 20}}>
+          <a href={`https://github.com/foureyedraven/foureyedraven.dev/tree/main/src/components/demos/${data.filename}.tsx`} target="_blank"><img src={String(logo)} alt="GitHub" width="32px" height="32px"/></a>
+        </div>
       </div>
-      <p style={{ fontWeight: 400 }}>{data.subtitle}</p>
       <div style={{ margin: 33 }}>
         {!!data.component ? React.createElement(data.component) : <p style={{ fontSize: 16, color: '#444' }}>Coming Soon...</p>}
       </div>
@@ -157,6 +171,7 @@ const demos = {
     title: 'Pokemon API Battle Game',
     subtitle: 'play a terminal Pokemon game that uses a Pokedex API',
     start: 'type \'help\' into the terminal to start',
+    filename: 'pokemon',
     component: Pokemon, // shows github code, and links
     // maybe saving high scores? which db? mongodb?
     // websocket to play against another player? (sign in code?)
@@ -168,25 +183,25 @@ const demos = {
   //   url: '',
   //   // system details, geolocation, wifi? signed-in accounts? fb data, ad data?
   // },
-  satellites: {
-    title: 'What\'s Above You',
-    subtitle: 'watch an animation of the satellites in your current sky',
-    start: 'Accept your location, or enter your coordinates',
-    url: '',
-  },
-  opencv: {
-    title: 'Transliterate A Photo',
-    subtitle: 'use computer vision to transliterate text from a photo to a chosen alphabet',
-    start: 'Choose a language to transliterate to, and upload a photo with another alphabet\'s text',
-    url: '',
-    // google translate voice api? to read out response (native accent)
-  },
-  webble: {
-    title: 'What\'s in Your Bluetooth Device',
-    subtitle: 'poke around your bluetooth device using the web-ble library',
-    start: 'Click on Connect To BLE Device',
-    url: '',
-  }
+  // satellites: {
+  //   title: 'What\'s Above You',
+  //   subtitle: 'watch an animation of the satellites in your current sky',
+  //   start: 'Accept your location, or enter your coordinates',
+  //   url: '',
+  // },
+  // opencv: {
+  //   title: 'Transliterate A Photo',
+  //   subtitle: 'use computer vision to transliterate text from a photo to a chosen alphabet',
+  //   start: 'Choose a language to transliterate to, and upload a photo with another alphabet\'s text',
+  //   url: '',
+  //   // google translate voice api? to read out response (native accent)
+  // },
+  // webble: {
+  //   title: 'What\'s in Your Bluetooth Device',
+  //   subtitle: 'poke around your bluetooth device using the web-ble library',
+  //   start: 'Click on Connect To BLE Device',
+  //   url: '',
+  // }
 }
 
 const tabs =  {

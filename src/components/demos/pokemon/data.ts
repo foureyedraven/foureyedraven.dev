@@ -80,7 +80,7 @@ export const  pokemonRules = `
 ##  POKEMON BATTLE! ##
 ######################
 
-##### COMMANDS ####
+###  COMMANDS  ###
 
 play            Shows you these rules & commands
 play {name}     Chooses an available Pokemon & shows its moves
@@ -90,24 +90,16 @@ report          Shows your Pokemon, experience, & history
 forfeit         Ends battle with no penalties
 help            See other commands available
 
-###################
 ### HOW TO PLAY ###
-###################
 
 1.  Start with your first Pokemon by typing \'play pikachu\'.
-
 2.  Type \'battle\' to begin a battle with a random Pokemon.
-
 3.  During battle, type \'use {move}\'. Your moves show on Step 1.
-
 4.  If you win, you keep the Pokemon and gain XP!
 
 TIPS: • Your attack power and Pokemon HP go up with your XP.
       • Something special happens when you reach 500 XP!
-      • You can play a Pokemon after you beat them.
-
-###  FORGOT?
-###  TYPE play TO SEE THIS AGAIN\n\n`
+      • You can play a Pokemon after you beat them.\n\n`
 
 const credits = `
 API data provided by https://pokeapi.co/
