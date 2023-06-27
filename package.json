@@ -14,7 +14,7 @@
     "lint:js": "standard",
     "copy": "ncp public dist",
     "dev": "npm-run-all --parallel copy dev:client dev:server",
-    "dev:client": "webpack --config ./webpack.config.js --mode development --watch",
+    "dev:client": "webpack --config ./webpack.config.js --mode production --watch",
     "dev:server": "webpack-dev-server",
     "build": "webpack --config ./webpack.config.js --mode production"
   },
