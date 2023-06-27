@@ -16,7 +16,7 @@
     "dev": "npm-run-all --parallel copy dev:client dev:server",
     "dev:client": "webpack --config ./webpack.config.js --mode production --watch",
     "dev:server": "webpack-dev-server",
-    "build": "tsc --noEmit webpack --config ./webpack.config.js --mode production"
+    "build": "tsc --noEmit && webpack --config ./webpack.config.js --mode production"
   },
   "author": "",
   "license": "ISC",
