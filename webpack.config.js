@@ -23,7 +23,19 @@ module.exports = [
     },
     module: {
       rules: [
-        { test: /\.(t|j)sx?$/, use: { loader: 'ts-loader' }, exclude: /node_modules/ },
+        {
+          test: /\.(t|j)sx?$/,
+          use: { loader: 'ts-loader' },
+          exclude: /node_modules/,
+          use: {
+            loader: 'ts-loader',
+            options: {
+              compilerOptions: {
+                noEmit: false, // this option will solve the issue
+              }
+            }
+          }
+        },
         // addition - add source-map support
         { enforce: "pre", test: /\.js$/, exclude: /node_modules/, loader: "source-map-loader" },
         {
@@ -51,11 +63,11 @@ module.exports = [
     // addition - add source-map support
     devtool: "source-map",
     plugins: [
-         // Will automatically inject bundle js into ./dist/index.html
-         new HTMLWebpackPlugin({
-             template: './public/index.html', //source
-             filename: 'index.html'  //destination
-         })
+      // Will automatically inject bundle js into ./dist/index.html
+      new HTMLWebpackPlugin({
+        template: './public/index.html', //source
+        filename: 'index.html'  //destination
+      })
     ]
   }
 ]
