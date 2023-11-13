@@ -11,18 +11,11 @@ const header = {
 
 const h1 = {
   color: '#fff',
-  // fontFamily: 'monospace',
-  marginBottom: 10,
-  marginTop: 10,
-  fontSize: 36
 }
 
 const h2 = {
   color: '#eee',
-  // fontFamily: 'sans-serif',
-  fontSize: 16,
   fontWeight: 400,
-  // textTransform: 'uppercase',
 }
 
 export class Header extends React.Component<{}, any> {

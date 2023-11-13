@@ -33,13 +33,7 @@ const styles = {
   },
   textBody: {
     paddingRight: '20px',
-    maxWidth: '550px'
-  },
-  a: {
-    color: '#111',
-    fontSize: '16px',
-    textDecoration: 'underline',
-    width: 'fit-content'
+    maxWidth: 666
   },
   p: {
     margin: 0,
@@ -49,10 +43,10 @@ const styles = {
   },
   textTab: {
     color: '#fff',
-    fontSize: '18px',
+    fontSize: '1.2rem',
     margin: 0,
     textDecoration: 'none',
-    paddingBottom:5,
+    paddingBottom: 5,
     borderBottom: '2px solid #666',
   },
   activeTab: {
@@ -95,37 +89,41 @@ const Profile = () => {
         My experience includes:<br/>
         <ul>
           <li>
-            building web apps from scratch using node.js, CSS, HTML, React, and Typescript,
+            building SPAs and web apps from scratch using node.js, CSS, HTML, React, and Typescript,
           </li>
-          <li>implementing UX/UI designs with Flex Box or Bootstrap,</li>
+          <li>implementing UX/UI designs to pixel perfection from Figma and Adobe XD,</li>
           <li>
-            API development with node.js,
+            API development with node.js and Java,
           </li>
           <li>
             PostgreSQL for queries, migrations and db management,
           </li>
           <li>integrating 3rd party APIs,</li>
+          <li>integrating microservices,</li>
+          <li>making the most of Cloud platforms AWS and Google Cloud Platform,</li>
           <li>BLE device and message management,</li>
           <li>scripting and library implementation with Python 3, notably openCV.</li>
         </ul><br/>
-        In my current role at <a style={styles.a} target="_blank" href="https://ozobot.com/">Ozobot</a>, I get to create and participate in new ways to deliver educational content and assessment of student work. Classwork is more worthwhile when students are naturally engaged, and I'm proud of the work we have done to break educational moulds to benefit the student.
+        At <a target="_blank" href="https://www.soundcloud.com">SoundCloud</a>, I helped to build <a target="_blank" href="https://artists.soundcloud.com">SoundCloud for Artists</a>, while also redesigning microservice features and the integration for asset delivery jobs, error reporting from log profiling, and connecting the Artists platform (formerly Repost) to soundcloud.com.
+        <br/><br/>
+        At <a target="_blank" href="https://ozobot.com/">Ozobot</a>, I created and participated in new ways to deliver educational content and assessment of student work. Classwork is more worthwhile when students are naturally engaged, and I'm proud of the work we have done to break educational moulds to benefit the student.
         <br/><br/>
         <div style={{ width: 'fit-content' }}>
-          <a style={styles.a} target="_blank" href="https://docs.google.com/document/d/1SNIqC6LjeXw5NvsxRQd6JKZxAlE6pKgrGa_xc7sfs1I/?usp=sharing">Check out my resume &#x21E8;</a>
+          <a target="_blank" href="https://docs.google.com/document/d/1SNIqC6LjeXw5NvsxRQd6JKZxAlE6pKgrGa_xc7sfs1I/?usp=sharing">Check out my resume &#x21E8;</a>
         </div>
         <br/>
         <h2>About Me</h2>
         {/* I learned most of this from scratch on the job in my first 6 months. Before my Jr Dev job, I learned MVC architecture with Ruby on Rails and HTML and CSS from many 90s Geocities sites. I also developed the majority of the consumer and educational coding content for <a style={styles.a} href='https://ozobot.com' target='_blank'>Ozobot's</a> robots using Blockly. */}
-        Some fun facts! My master's degree is in Archaeology and Arabic from the University of Edinburgh, Scotland, and after that I was a grade school teacher for 5 years (including in Seoul). I'm a multinational and have lived on four continents. These days, I live in Los Angeles where I garden native plants and am trying out aquaponic farming at home. I also translate medieval Arabic poetry and science treatises for practice.
+        Some fun facts! My master's degree is in Archaeology and Arabic from the University of Edinburgh, Scotland. After that, I worked as a grade school teacher for 5 years (including in Seoul). I'm a multinational and have lived on four continents. These days, I live in Los Angeles where I garden native plants, explore fibre arts like knitting, and study Japanese towards fluency.
         <br/><br/>
         <h2>Links</h2>
         I believe nurturing community is important. Here are some great tech initiatives helping their communities right now:
         <ul>
           <li>
-            <a style={styles.a} target="_blank" href="https://codecooperative.org/">Code Cooperative mentors people affected by incarceration &#x21E8;</a>
+            <a target="_blank" href="https://codecooperative.org/">Code Cooperative mentors people affected by incarceration &#x21E8;</a>
           </li>
           <li>
-            <a style={styles.a} target="_blank" href="https://elpha.com/">Elpha provides a supportive social network to women and non-binary women in tech &#x21E8;</a>
+            <a target="_blank" href="https://elpha.com/">Elpha provides a supportive social network to women and non-binary women in tech &#x21E8;</a>
           </li>
         </ul>
       </p>
