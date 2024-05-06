@@ -1,26 +1,8 @@
 import * as React from "react"
 
-const header = {
-  // display: 'flex',
-  // alignItems: 'center',
-  padding: '33px',
-  paddingBottom: '12px',
-  backgroundColor: '#111',
-  alignSelf: 'flex-start',
-}
 
-const h1 = {
-  color: '#fff',
-}
-
-const h2 = {
-  color: '#eee',
-  fontWeight: 400,
-}
-
-export class Header extends React.Component<{}, any> {
-  render() {
-
+export const Header = () => {
+  
     return (
       <div style={header}>
         <div>
@@ -34,4 +16,19 @@ export class Header extends React.Component<{}, any> {
       </div>
     )
   }
+
+  const h1 = {
+    color: '#fff',
+  }
+  
+  const h2 = {
+    color: '#eee',
+    fontWeight: 400,
+  }
+
+const header = {
+  padding: '33px',
+  paddingBottom: '12px',
+  backgroundColor: '#111',
+  alignSelf: 'flex-start',
 }

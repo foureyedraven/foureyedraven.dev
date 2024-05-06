@@ -50,8 +50,7 @@ const styles = {
     borderBottom: '2px solid #666',
   },
   activeTab: {
-    color: '#4e4',
-    borderBottom: '2px solid #4e4'
+    borderBottom: '2px solid #4e4',
   },
   demoWell: {
     height: 550,
@@ -66,7 +65,7 @@ const styles = {
 const Tab = ({ text, selected, selectFn }) => {
   return (
     <div style={styles.tab} onClick={() => selectFn(text)}>
-      <p style={selected ? { ...styles.textTab, borderBottom: '2px solid #4e4'} : styles.textTab }>{text}</p>
+      <p style={selected ? { ...styles.textTab, ...styles.activeTab} : styles.textTab }>{text}</p>
     </div>
   )
 }
@@ -84,7 +83,7 @@ const Profile = () => {
     <div>
     <p style={styles.textBody}>
       <h2>My CV</h2>
-        I've worked as a fullstack web developer since December 2018, and I love API development and interacting with hardware.
+        I've worked as a fullstack web developer since December 2018.
         <br/><br/>
         My experience includes:<br/>
         <ul>
@@ -100,7 +99,7 @@ const Profile = () => {
           </li>
           <li>integrating 3rd party APIs,</li>
           <li>integrating microservices,</li>
-          <li>making the most of Cloud platforms AWS and Google Cloud Platform,</li>
+          <li>Cloud platforms AWS and Google Cloud Platform,</li>
           <li>BLE device and message management,</li>
           <li>scripting and library implementation with Python 3, notably openCV.</li>
         </ul><br/>
@@ -113,11 +112,10 @@ const Profile = () => {
         </div>
         <br/>
         <h2>About Me</h2>
-        {/* I learned most of this from scratch on the job in my first 6 months. Before my Jr Dev job, I learned MVC architecture with Ruby on Rails and HTML and CSS from many 90s Geocities sites. I also developed the majority of the consumer and educational coding content for <a style={styles.a} href='https://ozobot.com' target='_blank'>Ozobot's</a> robots using Blockly. */}
         Some fun facts! My master's degree is in Archaeology and Arabic from the University of Edinburgh, Scotland. After that, I worked as a grade school teacher for 5 years (including in Seoul). I'm a multinational and have lived on four continents. These days, I live in Los Angeles where I garden native plants, explore fibre arts like knitting, and study Japanese towards fluency.
         <br/><br/>
         <h2>Links</h2>
-        I believe nurturing community is important. Here are some great tech initiatives helping their communities right now:
+        I believe community is important. Here are some great tech initiatives helping their communities right now:
         <ul>
           <li>
             <a target="_blank" href="https://codecooperative.org/">Code Cooperative mentors people affected by incarceration &#x21E8;</a>
@@ -179,7 +177,7 @@ const demos = {
   //   subtitle: 'what web browsers see when you use them',
   //   start: 'We\'ve already grabbed some data from your browser, take a look.',
   //   url: '',
-  //   // system details, geolocation, wifi? signed-in accounts? fb data, ad data?
+  //   // system details, geolocation, wifi? signed-in accounts? fb data, ad data? 
   // },
   // satellites: {
   //   title: 'What\'s Above You',
