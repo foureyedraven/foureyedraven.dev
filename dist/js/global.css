@@ -1,0 +1,100 @@
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;1,400&family=Source+Sans+Pro:ital,wght@0,300;0,400;0,700;1,600&display=swap');
+
+/**
+ * VARIABLES
+ */
+ :root {
+  --color-light: #f3f3f3;
+  --color-mid: #dedede;
+  --color-dark: #313e4f;
+  --color-slate: #444444;
+  --color-slate-light: #72788e;
+  --color-primary: #2a7bd6;
+  --color-inactive: #4f637d;
+  --color-offwhite: #eee;
+  --color-green: #4e4;
+  --font-family: 'Source Sans Pro', monospace;
+  --metric-rhythm: 1.5rem;
+}
+
+/**
+ * GLOBALS
+ */
+
+body{
+  font-family: var(--font-family);
+  color: var(--color-slate);
+  min-height: 100vh;
+  margin: 0;
+}
+
+main {
+  margin: 0 auto;
+}
+
+h1 {
+  font-size: 3rem;
+  margin: 0;
+  font-family: var(--font-family, --family);
+  color: var(--color-light);
+}
+
+h2 h3 {
+  font-size: 2rem;
+  font-weight: 300;
+  font-family: var(--font-family, --family);
+  margin: 0;
+}
+
+p a ul li  {
+  font-family: var(--font-family, --family);
+  font-size: 16px;
+  line-height: 1.4em;
+  color: '#111';
+}
+
+a {
+  color: #111;
+  font-size: '16px';
+  text-decoration: 'underline';
+  width: 'fit-content';
+  position: relative;
+}
+
+li {
+  line-height: 1.5em;
+}
+
+a:hover {
+  position: relative
+}
+
+/* Define the keyframes for the animation */
+@keyframes slideFromLeft {
+  0% {
+    width: 0;
+    left: 0;
+  }
+  100% {
+    width: 100%;
+    left: 0;
+  }
+}
+
+/* Style the pseudo-element */
+a::after {
+  content: ''; /* Required for pseudo-elements */
+  position: absolute; /* Position relative to the <a> tag */
+  bottom: 0; /* Align at the bottom */
+  left: 0; /* Align to the left */
+  width: 0; /* Initially, no width */
+  height: 4px; /* Height of the border */
+  background-color: #4e4; /* Color of the border */
+  transition: width 0.3s ease; /* Transition for smooth animation */
+}
+
+/* Apply animation on hover */
+a:hover::after {
+  animation: slideFromLeft 1s infinite; /* Apply animation with infinite loop */
+  animation-fill-mode: backwards; /* Reset animation when not running */
+}
